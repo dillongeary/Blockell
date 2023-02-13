@@ -1,0 +1,12 @@
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+  <category name="Lambda" colour="#5b67a5">
+    <block type="lamda_calculus">
+      <field name="NAME" id="sN5}OffN$xx#G_:n!+d~">item</field>
+    </block>
+    <block type="lambda_starter"></block>
+    <block type="variable">
+      <field name="NAME" id="sN5}OffN$xx#G_:n!+d~">item</field>
+    </block>
+  </category>
+  <category name="Variables" colour="#a55b80" custom="VARIABLE"></category>
+</xml>
