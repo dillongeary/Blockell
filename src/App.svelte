@@ -1,7 +1,11 @@
 <script lang="ts">
   import * as Blockly from "blockly"
   import {onMount} from "svelte";
-  import type {ToolboxDefinition} from "blockly/core/utils/toolbox";
+  import {blocks} from "./blocks/haskell";
+  import {haskellGenerator} from "./generators/haskell";
+  //import {load, save} from "blockly/core/serialization/workspaces";
+
+  Blockly.common.defineBlocks(blocks);
 
   const toolbox = {
     "kind":"categoryToolbox",
@@ -34,44 +38,6 @@
     ]
   };
 
-  //Block Definitions
-
-  Blockly.Blocks['lamda_calculus'] = {
-    init: function() {
-      this.appendValueInput("NAME")
-              .setCheck("String")
-              .appendField("λ")
-              .appendField(new Blockly.FieldVariable("var"), "NAME")
-              .appendField("→");
-      this.setInputsInline(false);
-      this.setOutput(true, null);
-      this.setColour(230);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
-  Blockly.Blocks['lambda_starter'] = {
-    init: function() {
-      this.appendValueInput("NAME")
-              .setCheck(null);
-      this.setColour(230);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
-  Blockly.Blocks['variable'] = {
-    init: function() {
-      this.appendDummyInput()
-              .appendField(new Blockly.FieldVariable("var"), "NAME");
-      this.setOutput(true, null);
-      this.setColour(230);
-      this.setTooltip("");
-      this.setHelpUrl("");
-    }
-  };
-
   const options = {
     toolbox : toolbox,
     collapse : true,
@@ -101,25 +67,60 @@
   onMount(async () => {
 
     const blocklyDiv = document.getElementById("blocklyDiv")
+    const outputDiv = document.getElementById("outputPane")
 
     const workspace = Blockly.inject(blocklyDiv, options);
 
-    const workspaceBlocks = document.getElementById("workspaceBlocks");
+    const runCode = () => {
+      const code = haskellGenerator.workspaceToCode(workspace);
+      outputDiv.innerText = code;
+    };
 
-    Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+    Blockly.serialization.workspaces.load(workspace);
+    runCode();
+
+    workspace.addChangeListener((e) => {
+      if (e.isUiEvent) return;
+      Blockly.serialization.workspaces.save(workspace);
+    });
+
+    workspace.addChangeListener((e) => {
+      if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING || workspace.isDragging()) {
+        return;
+      }
+      runCode();
+    });
   });
 
 
 </script>
 
 <main>
-  <div id="blocklyDiv" class="blocklyWorkspace"></div>
+  <div id="pageContainer">
+    <div id="blocklyDiv" class="blocklyWorkspace"></div>
+    <div id="outputPane"></div>
+  </div>
 </main>
 
 <style>
-  .blocklyWorkspace {
-    width:100vw;
-    height:100vh;
+  #pageContainer {
+    display: flex;
+    width: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+  }
+  #blocklyDiv {
+    flex-basis: 100%;
+    height: 100%;
+    min-width: 600px;
     background-color:white;
+  }
+  #outputPane {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    flex: 0 0 400px;
+    overflow: auto;
+    margin: 1rem;
   }
 </style>
