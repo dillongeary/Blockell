@@ -5,17 +5,17 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([{
         "message0": "λ %1 → %2",
         "args0": [
             {
-                "type": "field_variable",
-                "name": "NAME",
-                "variable": "item"
+                "type": "input_value",
+                "name": "VAR",
+                "check": "String"
             },
             {
                 "type": "input_value",
-                "name": "NAME",
+                "name": "VALUE",
                 "check": "String"
             }
         ],
-        "inputsInline": false,
+        "inputsInline": true,
         "output": null,
         "colour": 230,
         "tooltip": "",
@@ -33,19 +33,61 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([{
         "colour": 230,
         "tooltip": "",
         "helpUrl": ""
-    },
-    {
+    },{
+        "type": "string",
+        "message0": "\" %1 \"",
+        "args0": [
+            {
+                "type": "field_input",
+                "name": "VAL",
+                "text": "string"
+            }
+        ],
+        "output": null,
+        "colour": 210,
+        "tooltip": "",
+        "helpUrl": ""
+    },{
+        "type": "char",
+        "message0": "\' %1 \'",
+        "args0": [
+            {
+                "type": "field_input",
+                "name": "VAL",
+                "text": "char"
+            }
+        ],
+        "output": null,
+        "colour": 210,
+        "tooltip": "",
+        "helpUrl": ""
+    },{
+        "type": "integer",
+        "message0": "%1",
+        "args0": [
+            {
+                "type": "field_input",
+                "name": "VAL",
+                "text": "int"
+            }
+        ],
+        "output": null,
+        "colour": 210,
+        "tooltip": "",
+        "helpUrl": ""
+    },{
         "type": "variable",
         "message0": "%1",
         "args0": [
             {
-                "type": "field_variable",
-                "name": "NAME",
-                "variable": "item"
+                "type": "field_input",
+                "name": "VAL",
+                "text": "variableName"
             }
         ],
         "output": null,
-        "colour": 230,
+        "colour": 210,
         "tooltip": "",
         "helpUrl": ""
-    }]);
+    }
+]);

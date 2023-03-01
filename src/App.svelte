@@ -17,15 +17,18 @@
         "contents": [
           {
             "kind": "block",
-            "type": "lamda_calculus"
+            "type": "lamda_calculus",
+            "inputs": {
+              "VAR": {
+                "shadow" : {
+                  "type" : "variable"
+                }
+              }
+            }
           },
           {
             "kind": "block",
             "type": "lambda_starter"
-          },
-          {
-            "kind": "block",
-            "type": "variable"
           }
         ]
       },
@@ -33,13 +36,28 @@
         "kind": "category",
         "name": "Variables",
         "colour":"290",
-        "custom": "VARIABLE"
+        "contents": [
+          {
+            "kind":"block",
+            "type":"string"
+          },{
+            "kind":"block",
+            "type":"char"
+          },{
+            "kind":"block",
+            "type":"integer"
+          },{
+            "kind":"block",
+            "type":"variable"
+          }
+        ]
       }
     ]
   };
 
   const options = {
     toolbox : toolbox,
+    renderer : "thrasos",
     collapse : true,
     comments : true,
     disable : true,
@@ -63,20 +81,18 @@
     }
   };
 
+  let code = ""
 
   onMount(async () => {
-
-    const blocklyDiv = document.getElementById("blocklyDiv")
-    const outputDiv = document.getElementById("outputPane")
+    const blocklyDiv = document.getElementById("blocklyDiv");
 
     const workspace = Blockly.inject(blocklyDiv, options);
 
     const runCode = () => {
-      const code = haskellGenerator.workspaceToCode(workspace);
-      outputDiv.innerText = code;
+      code = haskellGenerator.workspaceToCode(workspace);
     };
 
-    Blockly.serialization.workspaces.load(workspace);
+    //Blockly.serialization.workspaces.load(workspace);
     runCode();
 
     workspace.addChangeListener((e) => {
@@ -91,36 +107,65 @@
       runCode();
     });
   });
-
-
 </script>
 
-<main>
+<body>
   <div id="pageContainer">
     <div id="blocklyDiv" class="blocklyWorkspace"></div>
-    <div id="outputPane"></div>
+    <div id="outputPane">
+      <pre id="generatedCode" class="insideOuterPane" ><code>{code}</code></pre>
+      <div id="output" class="insideOuterPane"></div>
+    </div>
   </div>
-</main>
+</body>
 
 <style>
+  body {
+    margin: 0;
+    max-width: 100vw;
+  }
   #pageContainer {
     display: flex;
-    width: 100%;
-    max-width: 100vw;
-    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
   }
   #blocklyDiv {
     flex-basis: 100%;
     height: 100%;
-    min-width: 600px;
+    width: 60%;
     background-color:white;
   }
   #outputPane {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    flex: 0 0 400px;
-    overflow: auto;
-    margin: 1rem;
+    width: 40%;
+    margin-left: 1rem;
+    gap:1rem;
+  }
+  #generatedCode {
+    background-color: rgb(247, 240, 228);
+    color: black;
+    margin: 0;
+  }
+  #output {
+    background-color: white;
+  }
+  .insideOuterPane {
+    height:50vh;
+    flex: 50%;
+    text-align: left;
+  }
+
+  @media screen and (max-height:540px) {
+    .insideOuterPane {
+      height:100%;
+    }
+    #outputPane {
+      flex-direction: row;
+      width: 60%;
+    }
+    #blocklyDiv {
+      width: 40%;
+    }
   }
 </style>
