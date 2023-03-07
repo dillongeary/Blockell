@@ -16,7 +16,7 @@
       {
         "kind": "category",
         "name": "Lambda",
-        "colour":"290",
+        "colour":"230",
         "contents": [
           {
             "kind": "block",
@@ -37,7 +37,7 @@
       },
       {
         "kind": "category",
-        "name": "Variables",
+        "name": "Higher Orders",
         "colour":"120",
         "contents": [
           {
@@ -58,7 +58,7 @@
       {
         "kind": "category",
         "name": "Variables",
-        "colour":"290",
+        "colour":"210",
         "contents": [
           {
             "kind":"block",
