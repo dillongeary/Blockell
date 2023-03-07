@@ -3,7 +3,10 @@
   import {onMount} from "svelte";
   import {blocks} from "./blocks/haskell";
   import {haskellGenerator} from "./generators/haskell";
+  import {CustomRenderer} from "./custom_renderer"
   //import {load, save} from "blockly/core/serialization/workspaces";
+
+  Blockly.blockRendering.register("custom_rendering",CustomRenderer);
 
   Blockly.common.defineBlocks(blocks);
 
@@ -28,7 +31,27 @@
           },
           {
             "kind": "block",
-            "type": "lambda_starter"
+            "type": "starter"
+          }
+        ]
+      },
+      {
+        "kind": "category",
+        "name": "Variables",
+        "colour":"120",
+        "contents": [
+          {
+            "kind":"block",
+            "type":"map"
+          },{
+            "kind":"block",
+            "type":"filter"
+          },{
+            "kind":"block",
+            "type":"foldl"
+          },{
+            "kind":"block",
+            "type":"foldr"
           }
         ]
       },
