@@ -13,31 +13,91 @@ haskellGenerator["lamda_calculus"] = function(block) {
 haskellGenerator["map"] = function(block) {
     const variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
     const value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
-    const code = `map ${variable} ${value}`;
+    const code = `map (${variable}) (${value})`;
     return [code,0];
 }
 
 haskellGenerator["filter"] = function(block) {
     const variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
     const value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
-    const code = `filter ${variable} ${value}`;
+    const code = `filter (${variable}) (${value})`;
     return [code,0];
 }
 
-haskellGenerator["foldl"] = function(block) {
+haskellGenerator["fold"] = function(block) {
     const variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
     const value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
     const list = haskellGenerator.valueToCode(block,"LIST",0) || "";
-    const code = `foldl ${variable} ${value} ${list}`;
+    const operator = block.getFieldValue("OPERATOR");
+    const code = `${operator} (${variable}) (${value}) (${list})`;
     return [code,0];
 }
 
-haskellGenerator["foldr"] = function(block) {
-    const variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
-    const value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
-    const list = haskellGenerator.valueToCode(block,"LIST",0) || "";
-    const code = `foldr ${variable} ${value} ${list}`;
+haskellGenerator["list_constructor"] = function(block) {
+    var code = "["
+    var i = 0
+    while (true) {
+        var val = haskellGenerator.valueToCode(block,"ADD"+i,0);
+        if (val === "") {
+            break
+        }
+        if (i > 0) {code = code + ","}
+        code = code + val
+        i++
+    }
+    code = code + "]"
     return [code,0];
+}
+
+haskellGenerator["list_access"] = function(block) {
+    const operator = block.getFieldValue("OPERATOR");
+    const list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+    const code = `${operator} (${list})`;
+    return [code,0];
+}
+
+haskellGenerator["cons"] = function(block) {
+    const item = haskellGenerator.valueToCode(block,"ITEM",0) || "";
+    const list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+    const code = `${item} : ${list}`;
+    return [code,0];
+}
+
+haskellGenerator["enum"] = function(block) {
+    const item = haskellGenerator.valueToCode(block,"FROM",0) || "";
+    const list = haskellGenerator.valueToCode(block,"TO",0) || "";
+    const code = `${item} .. ${list}`;
+    return [code,0];
+}
+
+haskellGenerator["numOperator"] = function(block) {
+    const operator = block.getFieldValue("OPERATOR");
+    const a = haskellGenerator.valueToCode(block,"A",0) || "";
+    const b = haskellGenerator.valueToCode(block,"B",0) || "";
+    const code = `(${a}) ${operator} (${b})`
+    return [code,0]
+}
+
+haskellGenerator["boolOperator"] = function(block) {
+    const operator = block.getFieldValue("OPERATOR");
+    const a = haskellGenerator.valueToCode(block,"A",0) || "";
+    const b = haskellGenerator.valueToCode(block,"B",0) || "";
+    const code = `(${a}) ${operator} (${b})`
+    return [code,0]
+}
+
+haskellGenerator["notOperator"] = function(block) {
+    const a = haskellGenerator.valueToCode(block,"A",0) || "";
+    const code = `not (${a})`
+    return [code,0]
+}
+
+haskellGenerator["comparison"] = function(block) {
+    const operator = block.getFieldValue("OPERATOR");
+    const a = haskellGenerator.valueToCode(block,"A",0) || "";
+    const b = haskellGenerator.valueToCode(block,"B",0) || "";
+    const code = `(${a}) ${operator} (${b})`
+    return [code,0]
 }
 
 haskellGenerator["string"] = function(block) {
