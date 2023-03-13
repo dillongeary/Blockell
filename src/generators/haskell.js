@@ -117,6 +117,11 @@ haskellGenerator["integer"] = function(block) {
     return [value,0];
 }
 
+haskellGenerator["block"] = function(block) {
+    const value = block.getFieldValue("BOOL");
+    return [value,0];
+}
+
 haskellGenerator["variable"] = function(block) {
     const value = block.getFieldValue("VAL");
     return [value,0];

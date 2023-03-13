@@ -216,6 +216,9 @@
             "type":"integer"
           },{
             "kind":"block",
+            "type":"bool"
+          },{
+            "kind":"block",
             "type":"variable"
           }
         ]

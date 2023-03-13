@@ -345,6 +345,23 @@ const variableBlocks = [
         "tooltip": "",
         "helpUrl": ""
     },{
+        "type": "bool",
+        "message0": "%1",
+        "args0": [
+            {
+                "type":"field_dropdown",
+                "name":"BOOL",
+                "options": [
+                    ["True","True"],
+                    ["False","False"]
+                ]
+            }
+        ],
+        "output": "value",
+        "colour": 210,
+        "tooltip": "",
+        "helpUrl": ""
+    },{
         "type": "variable",
         "message0": "%1",
         "args0": [
