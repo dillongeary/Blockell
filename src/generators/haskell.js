@@ -10,6 +10,12 @@ haskellGenerator["lamda_calculus"] = function(block) {
     return [code,0];
 }
 
+haskellGenerator["starter"] = function(block) {
+    const value = haskellGenerator.valueToCode(block,"NAME",0) || "";
+    const code = `main = do ${value}`;
+    return code;
+}
+
 haskellGenerator["map"] = function(block) {
     const variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
     const value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
