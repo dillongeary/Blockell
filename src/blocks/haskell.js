@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
 
+const lambdaColor = 0;
 const lambdaBlocks = [
     {
     "type": "lamda_calculus",
@@ -18,7 +19,7 @@ const lambdaBlocks = [
     ],
     "inputsInline": true,
     "output": "statement",
-    "colour": 230,
+    "colour": lambdaColor,
     "tooltip": "",
     "helpUrl": ""
 },{
@@ -31,11 +32,12 @@ const lambdaBlocks = [
                 "check" : ["statement","value"]
             }
         ],
-        "colour": 230,
+        "colour": lambdaColor,
         "tooltip": "",
         "helpUrl": ""
     }]
 
+const higherColor = 60;
 const higherOrderBlocks = [
     {
     "type": "map",
@@ -54,7 +56,7 @@ const higherOrderBlocks = [
     ],
     "inputsInline": true,
     "output": "statement",
-    "colour": 120,
+    "colour": higherColor,
     "tooltip": "",
     "helpUrl": ""
 },{
@@ -74,7 +76,7 @@ const higherOrderBlocks = [
     ],
     "inputsInline": true,
     "output": "statement",
-    "colour": 120,
+    "colour": higherColor,
     "tooltip": "",
     "helpUrl": ""
 },{
@@ -107,11 +109,12 @@ const higherOrderBlocks = [
     ],
     "inputsInline": true,
     "output": "statement",
-    "colour": 120,
+    "colour": higherColor,
     "tooltip": "",
     "helpUrl": ""
 }]
 
+const listColor = 120;
 const listBlocks = [
     {
         "type": "list_constructor",
@@ -127,7 +130,7 @@ const listBlocks = [
         "tooltip":"",
         "helpUrl":"",
         "mutator":"list_constructor_mutator",
-        "colour":70
+        "colour":listColor
     },{
         "type": "cons",
         "message0": "%1 : %2",
@@ -145,7 +148,7 @@ const listBlocks = [
         ],
         "inputsInline": true,
         "output": "value",
-        "colour":70,
+        "colour":listColor,
         "tooltip":"",
         "helpUrl":""
     },{
@@ -165,7 +168,7 @@ const listBlocks = [
         ],
         "inputsInline": true,
         "output": "statement",
-        "colour":70,
+        "colour":listColor,
         "tooltip":"",
         "helpUrl":""
     },{
@@ -190,12 +193,56 @@ const listBlocks = [
         ],
         "inputsInline": true,
         "output": "statement",
-        "colour":70,
+        "colour":listColor,
         "tooltip":"",
         "helpUrl":""
     }
 ]
 
+const tupleColor = 180;
+const tupleBlocks = [
+    {
+        "type": "tuple_constructor",
+        "message0": "%1",
+        "args0": [
+            {
+                "type":"input_dummy",
+                "name":"EMPTY",
+            },
+        ],
+        "output":"value",
+        "inputsInline":true,
+        "tooltip":"",
+        "helpUrl":"",
+        "mutator":"tuple_constructor_mutator",
+        "colour":tupleColor
+    },{
+        "type": "tuple_access",
+        "message0": "%1 %2",
+        "args0": [
+            {
+                "type":"field_dropdown",
+                "name":"OPERATOR",
+                "options": [
+                    ["fst","fst"],
+                    ["snd","snd"]
+                ]
+            },
+            {
+                "type":"input_value",
+                "name":"LIST",
+                "check": ["statement","value"]
+            }
+        ],
+        "inputsInline": true,
+        "output": "statement",
+        "colour":tupleColor,
+        "tooltip":"",
+        "helpUrl":""
+    }
+]
+
+const operatorColor = 240;
 const operators = [
     {
         "type": "numOperator",
@@ -223,7 +270,7 @@ const operators = [
         ],
         "inputsInline":true,
         "output": "statement",
-        "colour": 170,
+        "colour": operatorColor,
         "tooltip":"",
         "helpUrl":""
     },{
@@ -250,7 +297,7 @@ const operators = [
         ],
         "inputsInline":true,
         "output": "statement",
-        "colour": 170,
+        "colour": operatorColor,
         "tooltip":"",
         "helpUrl":""
     },{
@@ -265,7 +312,7 @@ const operators = [
         ],
         "inputsInline":true,
         "output": "statement",
-        "colour": 170,
+        "colour": operatorColor,
         "tooltip":"",
         "helpUrl":""
     },{
@@ -295,12 +342,13 @@ const operators = [
         ],
         "inputsInline":true,
         "output": "statement",
-        "colour": 170,
+        "colour": operatorColor,
         "tooltip":"",
         "helpUrl":""
     }
 ]
 
+const variableColor = 300;
 const variableBlocks = [
     {
         "type": "string",
@@ -313,7 +361,7 @@ const variableBlocks = [
             }
         ],
         "output": "value",
-        "colour": 210,
+        "colour": variableColor,
         "tooltip": "",
         "helpUrl": ""
     },{
@@ -327,7 +375,7 @@ const variableBlocks = [
             }
         ],
         "output": "value",
-        "colour": 210,
+        "colour": variableColor,
         "tooltip": "",
         "helpUrl": ""
     },{
@@ -341,7 +389,7 @@ const variableBlocks = [
             }
         ],
         "output": "value",
-        "colour": 210,
+        "colour": variableColor,
         "tooltip": "",
         "helpUrl": ""
     },{
@@ -358,7 +406,7 @@ const variableBlocks = [
             }
         ],
         "output": "value",
-        "colour": 210,
+        "colour": variableColor,
         "tooltip": "",
         "helpUrl": ""
     },{
@@ -372,11 +420,11 @@ const variableBlocks = [
             }
         ],
         "output": "value",
-        "colour": 210,
+        "colour": variableColor,
         "tooltip": "",
         "helpUrl": ""
     }
 ]
 
 
-export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([].concat(lambdaBlocks,higherOrderBlocks,listBlocks,variableBlocks,operators));
+export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([].concat(lambdaBlocks,higherOrderBlocks,listBlocks,variableBlocks,operators,tupleBlocks));

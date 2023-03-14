@@ -4,119 +4,25 @@
   import {blocks} from "./blocks/haskell";
   import {haskellGenerator} from "./generators/haskell";
   import {CustomRenderer} from "./custom_renderer"
+  import {listCreateMutator,listHelper,listCreateWithItem,listCreateWithContainer} from "./blocks/listMutator";
+  import {tupleCreateMutator,tupleHelper,tupleCreateWithItem,tupleCreateWithContainer} from "./blocks/tupleMutator";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
   Blockly.blockRendering.register("custom_rendering",CustomRenderer);
 
   Blockly.common.defineBlocks(blocks);
 
-  const listCreateMutator = {
-    saveExtraState: function() {
-      return {
-        "itemCount": this.itemCount_,
-      };
-    },
-    loadExtraState: function(state) {
-      this.itemCount_ = state["itemCount"];
-      this.updateShape_();
-    },
-    decompose: function(workspace) {
-      var topBlock = workspace.newBlock("lists_create_with_container");
-      topBlock.initSvg();
+  Blockly.Blocks["list_create_with_container"] = listCreateWithContainer;
+  Blockly.Blocks["list_create_with_item"] = listCreateWithItem;
 
-      var connection = topBlock.getInput("STACK").connection;
-      for (var i = 0; i < this.itemCount_; i++) {
-        var itemBlock = workspace.newBlock("list_create_with_item");
-        itemBlock.initSvg();
-        connection.connect(itemBlock.previousConnection);
-        connection = itemBlock.nextConnection;
-      }
-
-      return topBlock;
-    },
-    compose: function(topBlock) {
-      var itemBlock = topBlock.getInputTargetBlock("STACK");
-
-      var connections = [];
-      while (itemBlock && !itemBlock.isInsertionMarker()) {
-        connections.push(itemBlock.valueConnection_);
-        itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock()
-      }
-
-      for (var i = 0; i < this.itemCount_; i++) {
-        var connection = this.getInput("ADD" + i).connection.targetConnection;
-        if (connection && connections.indexOf(connection) == -1) {
-          connection.disconnect();
-        }
-      }
-
-      this.itemCount_ = connections.length;
-      this.updateShape_();
-      for (var i = 0; i < this.itemCount_; i++) {
-        Blockly.Mutator.reconnect(connections[i], this, "ADD" + i);
-      }
-    },
-    saveConnections: function(topBlock) {
-      var itemBlock = topBlock.getInputTargetBlock("STACK");
-      var i = 0;
-      while (itemBlock) {
-        var input = this.getInput("ADD"+i);
-        itemBlock.valueConnection_ = input && input.connection.targetConnection;
-        i++;
-        itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
-      }
-    },
-    updateShape_: function() {
-      if (this.getInput("CLOSEBRACKET")) {
-        this.removeInput("CLOSEBRACKET")
-      }
-      if (this.itemCount_ && this.getInput("EMPTY")) {
-        this.removeInput("EMPTY");
-      } else if (!this.itemCount_ && !this.getInput("EMPTY")) {
-        this.appendDummyInput("EMPTY").appendField("[");
-      }
-
-      for (var i = 0; i < this.itemCount_; i++) {
-        if (!this.getInput("ADD"+i)) {
-          var input = this.appendValueInput("ADD"+i).setAlign(Blockly.ALIGN_RIGHT);
-          if (i == 0) {
-            input.appendField("[");
-          } else {
-            input.appendField(",");
-          }
-        }
-      }
-      while (this.getInput("ADD"+i)) {
-        this.removeInput("ADD"+i);
-        i++
-      }
-
-      this.appendDummyInput("CLOSEBRACKET").appendField("]")
-    }
-  };
-
-  var helper = function() {
-    this.itemCount_ = 1;
-    this.updateShape_();
-  }
-
-  Blockly.Blocks["list_create_with_container"] = {
-    init: function() {
-      this.appendDummyInput().appendField(Blockly.Msg['LISTS_CREATE_WITH_CONTAINER_TITLE_ADD']);
-      this.appendStatementInput("STACK");
-    }
-  };
-
-  Blockly.Blocks["list_create_with_item"] = {
-    init: function() {
-      this.appendDummyInput().appendField(Blockly.Msg['LISTS_CREATE_WITH_ITEM_TITLE']);
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-    }
-  };
+  Blockly.Blocks["tuple_create_with_container"] = tupleCreateWithContainer;
+  Blockly.Blocks["tuple_create_with_item"] = tupleCreateWithItem;
 
   Blockly.Extensions.registerMutator("list_constructor_mutator",
-  listCreateMutator,helper,["list_create_with_item"])
+          listCreateMutator,listHelper,["list_create_with_item"]);
+
+  Blockly.Extensions.registerMutator("tuple_constructor_mutator",
+          tupleCreateMutator,tupleHelper,["tuple_create_with_item"]);
 
   const toolbox = {
     "kind":"categoryToolbox",
@@ -124,7 +30,7 @@
       {
         "kind": "category",
         "name": "Lambda",
-        "colour":"230",
+        "colour":"0",
         "contents": [
           {
             "kind": "block",
@@ -146,7 +52,7 @@
       {
         "kind": "category",
         "name": "Higher Orders",
-        "colour":"120",
+        "colour":"60",
         "contents": [
           {
             "kind":"block",
@@ -163,7 +69,7 @@
       {
         "kind": "category",
         "name": "List Operators",
-        "colour":"70",
+        "colour":"120",
         "contents": [
           {
             "kind":"block",
@@ -182,8 +88,22 @@
       },
       {
         "kind": "category",
+        "name": "Tuple Operators",
+        "colour":"180",
+        "contents": [
+          {
+            "kind":"block",
+            "type":"tuple_constructor"
+          },{
+            "kind":"block",
+            "type":"tuple_access"
+          }
+        ]
+      },
+      {
+        "kind": "category",
         "name": "Operators",
-        "colour": "170",
+        "colour": "240",
         "contents": [
           {
             "kind":"block",
@@ -203,7 +123,7 @@
       {
         "kind": "category",
         "name": "Variables",
-        "colour":"210",
+        "colour":"300",
         "contents": [
           {
             "kind":"block",
