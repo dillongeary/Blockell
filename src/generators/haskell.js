@@ -17,25 +17,32 @@ haskellGenerator["starter"] = function(block) {
 }
 
 haskellGenerator["map"] = function(block) {
-    const variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
-    const value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
-    const code = `map (${variable}) (${value})`;
+    let variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
+    let value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
+    if (variable.includes(" ")) {variable = `(${variable})`}
+    if (value.includes(" ")) {value = `(${value})`}
+    const code = `map ${variable} ${value}`;
     return [code,0];
 }
 
 haskellGenerator["filter"] = function(block) {
-    const variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
-    const value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
-    const code = `filter (${variable}) (${value})`;
+    let variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
+    let value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
+    if (variable.includes(" ")) {variable = `(${variable})`}
+    if (value.includes(" ")) {value = `(${value})`}
+    const code = `filter ${variable} ${value}`;
     return [code,0];
 }
 
 haskellGenerator["fold"] = function(block) {
-    const variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
-    const value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
-    const list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+    let variable = haskellGenerator.valueToCode(block,"FUNC",0) || "";
+    let value = haskellGenerator.valueToCode(block,"VALUE",0) || "";
+    let list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+    if (variable.includes(" ")) {variable = `(${variable})`}
+    if (value.includes(" ")) {value = `(${value})`}
+    if (list.includes(" ")) {list = `(${list})`}
     const operator = block.getFieldValue("OPERATOR");
-    const code = `${operator} (${variable}) (${value}) (${list})`;
+    const code = `${operator} ${variable} ${value} ${list}`;
     return [code,0];
 }
 
@@ -57,52 +64,64 @@ haskellGenerator["list_constructor"] = function(block) {
 
 haskellGenerator["list_access"] = function(block) {
     const operator = block.getFieldValue("OPERATOR");
-    const list = haskellGenerator.valueToCode(block,"LIST",0) || "";
-    const code = `${operator} (${list})`;
+    let list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+    if (list.includes(" ")) {list = `(${list})`}
+    const code = `${operator} ${list}`;
     return [code,0];
 }
 
 haskellGenerator["cons"] = function(block) {
-    const item = haskellGenerator.valueToCode(block,"ITEM",0) || "";
-    const list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+    let item = haskellGenerator.valueToCode(block,"ITEM",0) || "";
+    let list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+    if (item.includes(" ")) {item = `(${item})`}
+    if (list.includes(" ")) {list = `(${list})`}
     const code = `${item} : ${list}`;
     return [code,0];
 }
 
 haskellGenerator["enum"] = function(block) {
-    const item = haskellGenerator.valueToCode(block,"FROM",0) || "";
-    const list = haskellGenerator.valueToCode(block,"TO",0) || "";
+    let item = haskellGenerator.valueToCode(block,"FROM",0) || "";
+    let list = haskellGenerator.valueToCode(block,"TO",0) || "";
+    if (item.includes(" ")) {item = `(${item})`}
+    if (list.includes(" ")) {list = `(${list})`}
     const code = `${item} .. ${list}`;
     return [code,0];
 }
 
 haskellGenerator["numOperator"] = function(block) {
     const operator = block.getFieldValue("OPERATOR");
-    const a = haskellGenerator.valueToCode(block,"A",0) || "";
-    const b = haskellGenerator.valueToCode(block,"B",0) || "";
-    const code = `(${a}) ${operator} (${b})`
+    let a = haskellGenerator.valueToCode(block,"A",0) || "";
+    let b = haskellGenerator.valueToCode(block,"B",0) || "";
+    if (a.includes(" ")) {a = `(${a})`}
+    if (b.includes(" ")) {b = `(${b})`}
+    const code = `${a} ${operator} ${b}`
     return [code,0]
 }
 
 haskellGenerator["boolOperator"] = function(block) {
     const operator = block.getFieldValue("OPERATOR");
-    const a = haskellGenerator.valueToCode(block,"A",0) || "";
-    const b = haskellGenerator.valueToCode(block,"B",0) || "";
-    const code = `(${a}) ${operator} (${b})`
+    let a = haskellGenerator.valueToCode(block,"A",0) || "";
+    let b = haskellGenerator.valueToCode(block,"B",0) || "";
+    if (a.includes(" ")) {a = `(${a})`}
+    if (b.includes(" ")) {b = `(${b})`}
+    const code = `${a} ${operator} ${b}`
     return [code,0]
 }
 
 haskellGenerator["notOperator"] = function(block) {
-    const a = haskellGenerator.valueToCode(block,"A",0) || "";
-    const code = `not (${a})`
+    let a = haskellGenerator.valueToCode(block,"A",0) || "";
+    if (a.includes(" ")) {a = `(${a})`}
+    const code = `not ${a}`
     return [code,0]
 }
 
 haskellGenerator["comparison"] = function(block) {
     const operator = block.getFieldValue("OPERATOR");
-    const a = haskellGenerator.valueToCode(block,"A",0) || "";
-    const b = haskellGenerator.valueToCode(block,"B",0) || "";
-    const code = `(${a}) ${operator} (${b})`
+    let a = haskellGenerator.valueToCode(block,"A",0) || "";
+    let b = haskellGenerator.valueToCode(block,"B",0) || "";
+    if (a.includes(" ")) {a = `(${a})`}
+    if (b.includes(" ")) {b = `(${b})`}
+    const code = `${a} ${operator} ${b}`
     return [code,0]
 }
 
