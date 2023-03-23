@@ -35,9 +35,28 @@ const lambdaBlocks = [
         "colour": lambdaColor,
         "tooltip": "",
         "helpUrl": ""
+    },{
+        "type": "functionDefiner",
+        "message0": "%1 :: %2 %3",
+        "args0": [
+            {
+                "type": "field_input",
+                "name": "NAME",
+                "text": "function_name",
+                "check" : ["statement","value"]
+            },{
+                "type": "input_dummy"
+            },{
+                "type": "input_statement",
+                "name": "CODE"
+            }
+        ],
+        "colour": lambdaColor,
+        "tooltip": "",
+        "helpUrl": ""
     }]
 
-const higherColor = 60;
+const higherColor = 45;
 const higherOrderBlocks = [
     {
     "type": "map",
@@ -114,7 +133,7 @@ const higherOrderBlocks = [
     "helpUrl": ""
 }]
 
-const listColor = 120;
+const listColor = 90;
 const listBlocks = [
     {
         "type": "list_constructor",
@@ -199,7 +218,7 @@ const listBlocks = [
     }
 ]
 
-const tupleColor = 180;
+const tupleColor = 135;
 const tupleBlocks = [
     {
         "type": "tuple_constructor",
@@ -242,7 +261,7 @@ const tupleBlocks = [
     }
 ]
 
-const operatorColor = 240;
+const operatorColor = 180;
 const operators = [
     {
         "type": "numOperator",
@@ -348,7 +367,7 @@ const operators = [
     }
 ]
 
-const variableColor = 300;
+const variableColor = 225;
 const variableBlocks = [
     {
         "type": "string",

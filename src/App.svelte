@@ -2,10 +2,10 @@
   import * as Blockly from "blockly"
   import {onMount} from "svelte";
   import {blocks} from "./blocks/haskell";
-  import {haskellGenerator} from "./generators/haskell";
   import {CustomRenderer} from "./custom_renderer"
   import {listCreateMutator,listHelper,listCreateWithItem,listCreateWithContainer} from "./blocks/listMutator";
   import {tupleCreateMutator,tupleHelper,tupleCreateWithItem,tupleCreateWithContainer} from "./blocks/tupleMutator";
+  import {generateHaskellGenerator} from "./generators/haskell";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
   Blockly.blockRendering.register("custom_rendering",CustomRenderer);
@@ -46,13 +46,17 @@
           {
             "kind": "block",
             "type": "starter"
+          },
+          {
+            "kind": "block",
+            "type": "functionDefiner"
           }
         ]
       },
       {
         "kind": "category",
         "name": "Higher Orders",
-        "colour":"60",
+        "colour":"45",
         "contents": [
           {
             "kind":"block",
@@ -69,7 +73,7 @@
       {
         "kind": "category",
         "name": "List Operators",
-        "colour":"120",
+        "colour":"90",
         "contents": [
           {
             "kind":"block",
@@ -89,7 +93,7 @@
       {
         "kind": "category",
         "name": "Tuple Operators",
-        "colour":"180",
+        "colour":"135",
         "contents": [
           {
             "kind":"block",
@@ -103,7 +107,7 @@
       {
         "kind": "category",
         "name": "Operators",
-        "colour": "240",
+        "colour": "180",
         "contents": [
           {
             "kind":"block",
@@ -123,7 +127,7 @@
       {
         "kind": "category",
         "name": "Variables",
-        "colour":"300",
+        "colour":"225",
         "contents": [
           {
             "kind":"block",
@@ -142,6 +146,12 @@
             "type":"variable"
           }
         ]
+      },
+      {
+        "kind": "category",
+        "name": "Functions",
+        "color":"270",
+        "contents": []
       },
       {
         "kind": "category",
@@ -179,13 +189,47 @@
 
   let code = ""
 
+  export let addUpdateToolbox;
+
   onMount(async () => {
     const blocklyDiv = document.getElementById("blocklyDiv");
 
     const workspace = Blockly.inject(blocklyDiv, options);
 
+    let currentFunctionBlocks = {}
+
+    function generateCode(haskellGenerator,name) {
+      return function(block) {
+        var code = `${name}`
+        var i = 0;
+        while (true) {
+          var val = haskellGenerator.valueToCode(block, "ADD" + i, 0);
+          if (val === "") {
+            break
+          }
+          code = code + " " + val
+          i++
+        }
+        return [code,0];
+      }
+    }
+
+    addUpdateToolbox = (haskellGenerator,name,block,json) => {
+      Blockly.Blocks["function_"+name] = block;
+      currentFunctionBlocks[name] = json;
+      haskellGenerator["function_"+name] = generateCode(haskellGenerator,name)
+    }
+
+    let haskellGenerator = generateHaskellGenerator(addUpdateToolbox);
+
     const runCode = () => {
+      currentFunctionBlocks = {};
+
       code = haskellGenerator.workspaceToCode(workspace);
+
+      let toolboxCopy = structuredClone(toolbox);
+      toolboxCopy["contents"][6]["contents"] = Object.values(currentFunctionBlocks);
+      workspace.updateToolbox(toolboxCopy);
     };
 
     //Blockly.serialization.workspaces.load(workspace);
