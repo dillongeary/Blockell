@@ -5,13 +5,18 @@ export function generateHaskellGenerator(addUpdateToolbox) {
     // do some stuff to generate this in here
     haskellGenerator["functionDefiner"] = function (block) {
         const name = block.getFieldValue("NAME");
+        let amountOfLists = block.inputList_.length - 1;
+
         let json = {
             "kind":"block",
             "type":"function_"+name
         }
         let blockk = {
             init: function() {
-                this.appendValueInput("ADD1").setCheck(null).appendField(name);
+                this.appendDummyInput().appendField(name);
+                for (var i = 0; i < amountOfLists; i++) {
+                    this.appendValueInput("ADD" + i).setCheck(null);
+                }
                 this.setInputsInline(true);
                 this.setColour(270);
                 this.setOutput(true,null);

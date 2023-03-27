@@ -6,6 +6,12 @@
   import {listCreateMutator,listHelper,listCreateWithItem,listCreateWithContainer} from "./blocks/listMutator";
   import {tupleCreateMutator,tupleHelper,tupleCreateWithItem,tupleCreateWithContainer} from "./blocks/tupleMutator";
   import {generateHaskellGenerator} from "./generators/haskell";
+  import {
+    functionCreateMutator,
+    functionCreateWithBool, functionCreateWithChar,
+    functionCreateWithContainer,
+    functionCreateWithInt, functionCreateWithString, functionHelper
+  } from "./blocks/functionDefinitionMutator";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
   Blockly.blockRendering.register("custom_rendering",CustomRenderer);
@@ -17,6 +23,15 @@
 
   Blockly.Blocks["tuple_create_with_container"] = tupleCreateWithContainer;
   Blockly.Blocks["tuple_create_with_item"] = tupleCreateWithItem;
+
+  Blockly.Blocks["function_create_with_container"] = functionCreateWithContainer;
+  Blockly.Blocks["function_create_with_int"] = functionCreateWithInt;
+  Blockly.Blocks["function_create_with_bool"] = functionCreateWithBool;
+  Blockly.Blocks["function_create_with_string"] = functionCreateWithString;
+  Blockly.Blocks["function_create_with_char"] = functionCreateWithChar;
+
+  Blockly.Extensions.registerMutator("function_constructor_mutator",
+          functionCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string"])
 
   Blockly.Extensions.registerMutator("list_constructor_mutator",
           listCreateMutator,listHelper,["list_create_with_item"]);

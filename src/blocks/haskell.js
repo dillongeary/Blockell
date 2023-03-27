@@ -37,13 +37,17 @@ const lambdaBlocks = [
         "helpUrl": ""
     },{
         "type": "functionDefiner",
-        "message0": "%1 :: %2 %3",
+        "message0": "%1 :: %2 %3 %4",
         "args0": [
             {
                 "type": "field_input",
                 "name": "NAME",
                 "text": "function_name",
                 "check" : ["statement","value"]
+            },{
+                "type": "field_label_serializable",
+                "name": "INPUTS",
+                "text": ""
             },{
                 "type": "input_dummy"
             },{
@@ -53,7 +57,8 @@ const lambdaBlocks = [
         ],
         "colour": lambdaColor,
         "tooltip": "",
-        "helpUrl": ""
+        "helpUrl": "",
+        "mutator":"function_constructor_mutator"
     }]
 
 const higherColor = 45;
