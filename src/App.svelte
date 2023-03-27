@@ -174,11 +174,6 @@
         "name": "Functions",
         "color":"270",
         "contents": []
-      },
-      {
-        "kind": "category",
-        "name": "Procedures",
-        "custom":"PROCEDURE"
       }
     ]
   };
