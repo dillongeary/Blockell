@@ -3,7 +3,7 @@ import * as Blockly from "blockly";
 export function generateHaskellGenerator(addUpdateToolbox) {
     const haskellGenerator = new Blockly.Generator("Haskell");
     // do some stuff to generate this in here
-    haskellGenerator["functionDefiner"] = function (block) {
+    haskellGenerator["functionDeclaration"] = function (block) {
         const name = block.getFieldValue("NAME");
         let amountOfLists = block.inputList_.length - 1;
 

@@ -1,7 +1,7 @@
 import * as Blockly from "blockly";
 
-export let functionCreateMutator;
-functionCreateMutator  = {
+export let functionDeclarationCreateMutator;
+functionDeclarationCreateMutator  = {
     saveExtraState: function() {
         return {
             "inputList": this.inputList_,
@@ -49,6 +49,11 @@ functionCreateMutator  = {
     updateShape_: function() {
         let blockText = this.inputList_.join(" → ");
         this.setFieldValue(blockText,"INPUTS");
+        let child = this.getInputTargetBlock("CODE")
+        while (child) {
+            child.updateShape_();
+            child = child.nextConnection.targetBlock();
+        }
     }
 }
 

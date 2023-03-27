@@ -36,7 +36,7 @@ const lambdaBlocks = [
         "tooltip": "",
         "helpUrl": ""
     },{
-        "type": "functionDefiner",
+        "type": "functionDeclaration",
         "message0": "%1 :: %2 %3 %4",
         "args0": [
             {
@@ -58,7 +58,33 @@ const lambdaBlocks = [
         "colour": lambdaColor,
         "tooltip": "",
         "helpUrl": "",
-        "mutator":"function_constructor_mutator"
+        "mutator":"function_declaration_constructor_mutator"
+    },{
+        "type": "functionDefinition",
+        "message0": "%1 %2 %3",
+        "args0": [
+            {
+                "type": "field_label_serializable",
+                "name": "FUNC_NAME",
+                "text": "name"
+            },{
+                "type": "input_value",
+                "name": "INPUT0",
+                "check": "value"
+            },
+            {
+                "type": "input_value",
+                "name": "OUTPUT",
+                "check": ["statement","value"]
+            }
+        ],
+        "colour": lambdaColor,
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "tooltip": "",
+        "helpUrl": "",
+        "mutator":"function_definition_mutator"
     }]
 
 const higherColor = 45;

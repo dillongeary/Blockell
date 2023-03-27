@@ -7,11 +7,12 @@
   import {tupleCreateMutator,tupleHelper,tupleCreateWithItem,tupleCreateWithContainer} from "./blocks/tupleMutator";
   import {generateHaskellGenerator} from "./generators/haskell";
   import {
-    functionCreateMutator,
+    functionDeclarationCreateMutator,
     functionCreateWithBool, functionCreateWithChar,
     functionCreateWithContainer,
     functionCreateWithInt, functionCreateWithString, functionHelper
-  } from "./blocks/functionDefinitionMutator";
+  } from "./blocks/functionDeclarationMutator";
+  import {functionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
   Blockly.blockRendering.register("custom_rendering",CustomRenderer);
@@ -30,14 +31,16 @@
   Blockly.Blocks["function_create_with_string"] = functionCreateWithString;
   Blockly.Blocks["function_create_with_char"] = functionCreateWithChar;
 
-  Blockly.Extensions.registerMutator("function_constructor_mutator",
-          functionCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string"])
+  Blockly.Extensions.registerMutator("function_declaration_constructor_mutator",
+          functionDeclarationCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string"])
 
   Blockly.Extensions.registerMutator("list_constructor_mutator",
           listCreateMutator,listHelper,["list_create_with_item"]);
 
   Blockly.Extensions.registerMutator("tuple_constructor_mutator",
           tupleCreateMutator,tupleHelper,["tuple_create_with_item"]);
+
+  Blockly.Extensions.registerMutator("function_definition_mutator",functionDefinitionCreateMutator,functionDefinitionHelper);
 
   const toolbox = {
     "kind":"categoryToolbox",
@@ -64,7 +67,11 @@
           },
           {
             "kind": "block",
-            "type": "functionDefiner"
+            "type": "functionDeclaration"
+          },
+          {
+            "kind": "block",
+            "type": "functionDefinition"
           }
         ]
       },
