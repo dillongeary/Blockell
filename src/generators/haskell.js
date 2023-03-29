@@ -5,7 +5,7 @@ export function generateHaskellGenerator(addUpdateToolbox) {
     // do some stuff to generate this in here
     haskellGenerator["functionDeclaration"] = function (block) {
         const name = block.getFieldValue("NAME");
-        let amountOfLists = block.inputList_.length - 1;
+        let amountOfLists = block.inputList_.length ;
 
         let json = {
             "kind":"block",

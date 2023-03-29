@@ -13,6 +13,7 @@
     functionCreateWithInt, functionCreateWithString, functionHelper
   } from "./blocks/functionDeclarationMutator";
   import {functionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
+  import {functionInputTypeHelper, functionInputTypeMutator} from "./blocks/functonInputTypeMutator";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
   Blockly.blockRendering.register("custom_rendering",CustomRenderer);
@@ -30,6 +31,8 @@
   Blockly.Blocks["function_create_with_bool"] = functionCreateWithBool;
   Blockly.Blocks["function_create_with_string"] = functionCreateWithString;
   Blockly.Blocks["function_create_with_char"] = functionCreateWithChar;
+
+  Blockly.Extensions.registerMutator("function_input_type_mutator",functionInputTypeMutator,functionInputTypeHelper)
 
   Blockly.Extensions.registerMutator("function_declaration_constructor_mutator",
           functionDeclarationCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string"])
@@ -72,6 +75,18 @@
           {
             "kind": "block",
             "type": "functionDefinition"
+          },
+          {
+            "kind": "block",
+            "type": "whereClause"
+          },
+          {
+            "kind": "block",
+            "type": "guardWrapper"
+          },
+          {
+            "kind": "block",
+            "type": "guard"
           }
         ]
       },

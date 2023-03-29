@@ -85,6 +85,72 @@ const lambdaBlocks = [
         "tooltip": "",
         "helpUrl": "",
         "mutator":"function_definition_mutator"
+    },{
+        "type": "whereClause",
+        "message0": "where %1 :: %2 %3 %4",
+        "args0": [
+            {
+                "type": "field_input",
+                "name": "NAME",
+                "text": "function_name",
+                "check" : ["statement","value"]
+            },{
+                "type": "field_label_serializable",
+                "name": "INPUTS",
+                "text": ""
+            },{
+                "type": "input_dummy"
+            },{
+                "type": "input_statement",
+                "name": "CODE"
+            }
+        ],
+        "colour": lambdaColor,
+        "previousStatement": null,
+        "nextStatement": null,
+        "tooltip": "",
+        "helpUrl": "",
+        "mutator":"function_declaration_constructor_mutator"
+    },{
+        "type": "guardWrapper",
+        "message0": "Guards: %1 %2 otherwise: %3",
+        "args0": [
+            {
+                "type": "input_dummy"
+            },{
+                "type": "input_statement",
+                "name": "CODE"
+            },{
+                "type": "input_value",
+                "name": "OTHERWISE",
+                "check": ["statement","value"]
+            }
+        ],
+        "colour": lambdaColor,
+        "inputsInline": true,
+        "output": "statement",
+        "tooltip": "",
+        "helpUrl": "",
+    },{
+        "type": "guard",
+        "message0": "if %1 then %2",
+        "args0": [
+            {
+                "type": "input_value",
+                "name": "OTHERWISE",
+                "check": ["statement","value"]
+            },{
+                "type": "input_value",
+                "name": "OTHERWISE",
+                "check": ["statement","value"]
+            }
+        ],
+        "colour": lambdaColor,
+        "inputsInline": true,
+        "previousStatement": null,
+        "nextStatement": null,
+        "tooltip": "",
+        "helpUrl": "",
     }]
 
 const higherColor = 45;

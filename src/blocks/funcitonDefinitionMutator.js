@@ -14,7 +14,7 @@ functionDefinitionCreateMutator = {
             }
             let tempInputAmount = this.getSurroundParent().inputList_.length;
             if (tempInputAmount !== null) {
-                this.amountOfInputs_ = tempInputAmount - 1;
+                this.amountOfInputs_ = tempInputAmount;
             }
         }
         this.updateShape_()
@@ -56,7 +56,7 @@ functionDefinitionCreateMutator = {
         }
 
         let output = this.appendValueInput("OUTPUT").setCheck(["value","statement"])
-        if (this.amountOfInputs_ === 0) {
+        if (this.amountOfInputs_ < 1) {
             output.appendField(this.functionName_ + " = ")
         } else {
             output.appendField(" = ")
