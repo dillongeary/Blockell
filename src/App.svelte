@@ -12,7 +12,7 @@
     functionCreateWithContainer,
     functionCreateWithInt, functionCreateWithString, functionHelper
   } from "./blocks/functionDeclarationMutator";
-  import {functionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
+  import {defineFunctionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
   import {functionInputTypeHelper, functionInputTypeMutator} from "./blocks/functonInputTypeMutator";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
@@ -43,34 +43,29 @@
   Blockly.Extensions.registerMutator("tuple_constructor_mutator",
           tupleCreateMutator,tupleHelper,["tuple_create_with_item"]);
 
-  Blockly.Extensions.registerMutator("function_definition_mutator",functionDefinitionCreateMutator,functionDefinitionHelper);
 
   const toolbox = {
     "kind":"categoryToolbox",
     "contents": [
       {
         "kind": "category",
-        "name": "Lambda",
+        "name": "Meta",
         "colour":"0",
         "contents": [
-          {
-            "kind": "block",
-            "type": "lamda_calculus",
-            "inputs": {
-              "VAR": {
-                "shadow" : {
-                  "type" : "variable"
-                }
-              }
-            }
-          },
           {
             "kind": "block",
             "type": "starter"
           },
           {
             "kind": "block",
-            "type": "functionDeclaration"
+            "type": "functionDeclaration",
+            "inputs": {
+              "CODE": {
+                "block": {
+                  "type":"functionDefinition"
+                }
+              }
+            }
           },
           {
             "kind": "block",
@@ -78,11 +73,25 @@
           },
           {
             "kind": "block",
-            "type": "whereClause"
+            "type": "whereClause",
+            "inputs": {
+              "CODE": {
+                "block": {
+                  "type":"functionDefinition"
+                }
+              }
+            }
           },
           {
             "kind": "block",
-            "type": "guardWrapper"
+            "type": "guardWrapper",
+            "inputs": {
+              "CODE": {
+                "block": {
+                  "type":"guard"
+                }
+              }
+            }
           },
           {
             "kind": "block",
@@ -104,6 +113,16 @@
           },{
             "kind":"block",
             "type":"fold"
+          },{
+            "kind": "block",
+            "type": "lamda_calculus",
+            "inputs": {
+              "VAR": {
+                "shadow" : {
+                  "type" : "variable"
+                }
+              }
+            }
           }
         ]
       },
@@ -193,32 +212,6 @@
     ]
   };
 
-  const options = {
-    toolbox : toolbox,
-    renderer : "thrasos",
-    collapse : true,
-    comments : true,
-    disable : true,
-    maxBlocks : Infinity,
-    trashcan : true,
-    horizontalLayout : false,
-    toolboxPosition : 'start',
-    css : true,
-    media : 'https://blockly-demo.appspot.com/static/media/',
-    rtl : false,
-    scrollbars : true,
-    sounds : true,
-    oneBasedIndex : true,
-    zoom : {
-      controls : true,
-      wheel : true,
-      startScale : 1,
-      maxScale : 3,
-      minScale : 0.3,
-      scaleSpeed : 1.2
-    }
-  };
-
   let code = ""
 
   export let addUpdateToolbox;
@@ -226,7 +219,36 @@
   onMount(async () => {
     const blocklyDiv = document.getElementById("blocklyDiv");
 
+    const options = {
+      toolbox : toolbox,
+      renderer : "thrasos",
+      collapse : false,
+      comments : false,
+      disable : false,
+      maxBlocks : Infinity,
+      trashcan : true,
+      horizontalLayout : true,
+      toolboxPosition : 'end',
+      css : true,
+      media : 'https://blockly-demo.appspot.com/static/media/',
+      rtl : false,
+      scrollbars : true,
+      sounds : true,
+      oneBasedIndex : true,
+      zoom : {
+        controls : false,
+        wheel : true,
+        startScale : 1,
+        maxScale : 3,
+        minScale : 0.3,
+        scaleSpeed : 1.2
+      }
+    };
+
     const workspace = Blockly.inject(blocklyDiv, options);
+
+    let functionDefinitionCreateMutator = defineFunctionDefinitionCreateMutator(workspace)
+    Blockly.Extensions.registerMutator("function_definition_mutator",functionDefinitionCreateMutator,functionDefinitionHelper);
 
     let currentFunctionBlocks = {}
 
@@ -284,10 +306,7 @@
 <body>
   <div id="pageContainer">
     <div id="blocklyDiv" class="blocklyWorkspace"></div>
-    <div id="outputPane">
-      <pre id="generatedCode" class="insideOuterPane" ><code>{code}</code></pre>
-      <div id="output" class="insideOuterPane"></div>
-    </div>
+    <div id="outputPane"><h3>Generated Code:</h3><pre id="insideOutputPane"><code>{code}</code></pre></div>
   </div>
 </body>
 
@@ -302,42 +321,26 @@
     height: 100vh;
   }
   #blocklyDiv {
-    flex-basis: 100%;
     height: 100%;
     width: 60%;
     background-color:white;
+    resize:horizontal;
+    overflow: auto;
   }
   #outputPane {
     display: flex;
     flex-direction: column;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    flex: 1;
     width: 40%;
-    margin-left: 1rem;
-    gap:1rem;
+    height: 100%;
   }
-  #generatedCode {
+  #insideOutputPane {
+    flex: 1;
+    width: 100%;
     background-color: rgb(247, 240, 228);
     color: black;
-    margin: 0;
-  }
-  #output {
-    background-color: white;
-  }
-  .insideOuterPane {
-    height:50vh;
-    flex: 50%;
     text-align: left;
-  }
-
-  @media screen and (max-height:540px) {
-    .insideOuterPane {
-      height:100%;
-    }
-    #outputPane {
-      flex-direction: row;
-      width: 60%;
-    }
-    #blocklyDiv {
-      width: 40%;
-    }
   }
 </style>

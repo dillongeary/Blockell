@@ -2,9 +2,19 @@ import * as Blockly from "blockly";
 
 export function generateHaskellGenerator(addUpdateToolbox) {
     const haskellGenerator = new Blockly.Generator("Haskell");
+
+    haskellGenerator.scrub_ = function (block, code, thisOnly) {
+        const nextBlock = block.nextConnection && block.nextConnection.targetBlock();
+        if (nextBlock && !thisOnly) {
+            return code + "\n" + haskellGenerator.blockToCode(nextBlock);
+        }
+        return code;
+    }
     // do some stuff to generate this in here
     haskellGenerator["functionDeclaration"] = function (block) {
         const name = block.getFieldValue("NAME");
+        const typing = block.getFieldValue("INPUTS").replaceAll("→","->");
+        const definition = haskellGenerator.blockToCode(block.getInputTargetBlock("CODE"))
         let amountOfLists = block.inputList_.length ;
 
         let json = {
@@ -24,8 +34,96 @@ export function generateHaskellGenerator(addUpdateToolbox) {
         };
         addUpdateToolbox(haskellGenerator,name,blockk,json);
 
-        return "";
+        let code = `${name} :: ${typing}\n${definition}\n`
+
+        return code;
     };
+
+    haskellGenerator["functionDefinition"] = function (block) {
+        const name = block.getSurroundParent() && block.getSurroundParent().getFieldValue("NAME")
+        const output = haskellGenerator.valueToCode(block,"OUTPUT",0)
+        let code;
+        if (name) {
+            code = name;
+        } else {
+            code = "defaultName"
+        }
+
+        var i = 0
+        while (true) {
+            let val = haskellGenerator.valueToCode(block,"INPUT"+i,0);
+            if (val === "") {
+                break
+            }
+            code = `${code} ${val}`
+            i++
+        }
+
+        let indent;
+
+        if (block.getPreviousBlock() && block.getPreviousBlock().type === "whereClause") {
+            indent = ""
+        } else if (block.getPreviousBlock()){
+            indent = " ".repeat(block.getSurroundParent().getIndentCount() * 8);
+        } else {
+            indent = ""
+        }
+
+        block.childrensIndentLength_ = indent.length + code.length;
+
+        if (block.getInputTargetBlock("OUTPUT") && block.getInputTargetBlock("OUTPUT").type === "guardWrapper") {
+            code = `${indent}${code} ${output}`
+        } else {
+            code = `${indent}${code} = ${output}`
+        }
+
+        return code;
+    }
+
+    haskellGenerator["whereClause"] = function (block) {
+        const rest = haskellGenerator.blockToCode(block.getInputTargetBlock("CODE"));
+        let indentAmount = Math.max(0, block.getIndentCount() - 1)
+        let indent = " ".repeat(indentAmount * 8)
+        let code = `${indent}  where ${rest}`
+        return code
+    }
+
+    haskellGenerator["guardWrapper"] = function (block) {
+        const definition = haskellGenerator.blockToCode(block.getInputTargetBlock("CODE"));
+        const otherwise = haskellGenerator.valueToCode(block,"OTHERWISE",0);
+
+        let indent
+        if (block.getParent()) {
+             indent = " ".repeat(block.getParent().childrensIndentLength_ + 1);
+        } else {
+            indent = ""
+        }
+
+        let code;
+        if (!definition) {
+            code = `| otherwise = ${otherwise}`
+        } else {
+            code = `${definition}\n${indent}| otherwise = ${otherwise}`
+        }
+
+        return [code,0]
+    }
+
+    haskellGenerator["guard"] = function (block) {
+        const predicate = haskellGenerator.valueToCode(block,"PREDICATE",0);
+        const code = haskellGenerator.valueToCode(block,"CODE",0);
+
+        let indent;
+        if (block.getPreviousBlock() && block.getPreviousBlock().type === "guardWrapper") {
+            indent = ""
+        } else if (block.getPreviousBlock()){
+            indent = " ".repeat(block.getSurroundParent().getParent().childrensIndentLength_ + 1);
+        } else {
+            indent = ""
+        }
+
+        return `${indent}| ${predicate} = ${code}`
+    }
 
     function formatBrackets(str) {
         if (str.startsWith("(") && str.endsWith(")")) {

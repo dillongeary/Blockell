@@ -6,11 +6,13 @@ functionDeclarationCreateMutator  = {
         return {
             "inputList": this.inputList_,
             "outputList": this.outputList_,
+            "indentCount": this.indentCount_,
         };
     },
     loadExtraState: function(state) {
         this.inputList_ = state["inputList"];
         this.outputList_ = state["outputList"];
+        this.indentCount_ = state["indentCount"];
         this.updateShape_();
     },
     decompose: function(workspace) {
@@ -25,7 +27,7 @@ functionDeclarationCreateMutator  = {
                 case "String" : itemBlock = workspace.newBlock("function_create_with_string"); break;
                 case "Char" : itemBlock = workspace.newBlock("function_create_with_char"); break;
                 case "Bool" : itemBlock = workspace.newBlock("function_create_with_bool"); break;
-                default : itemBlock = workspace.newBlock("function_create_with_int");
+                default : if (block.startsWith("(")) {}
             }
             itemBlock.initSvg();
             inputConnection.connect(itemBlock.previousConnection);
@@ -52,13 +54,13 @@ functionDeclarationCreateMutator  = {
         var tempInputList = [];
         var itemBlock = topBlock.getInputTargetBlock("STACK");
         while (itemBlock && !itemBlock.isInsertionMarker()) {
-            tempInputList.push(itemBlock.getFieldValue("TYPE"));
+            tempInputList.push(itemBlock.getText());
             itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock()
         }
         var tempOutputList = [];
         var itemBlock = topBlock.getInputTargetBlock("STACK2");
         while (itemBlock && !itemBlock.isInsertionMarker()) {
-            tempOutputList.push(itemBlock.getFieldValue("TYPE"));
+            tempOutputList.push(itemBlock.getText());
             itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock()
         }
 
@@ -77,7 +79,54 @@ functionDeclarationCreateMutator  = {
             child.updateShape_();
             child = child.nextConnection.targetBlock();
         }
+    },
+    getIndentCount: function() {
+        if (this.getSurroundParent()) {
+            this.indentCount_ = this.getSurroundParent().getIndentCount() + 1;
+        } else {
+            this.indentCount_ = 0;
+        }
+        return this.indentCount_;
     }
+}
+
+function typingParser(input) {
+    var output = [];
+    let current = "";
+    input = input.replace(" ","");
+    let char = "";
+    for (let i = 0; i < input.length; i++) {
+        char = input.charAt(i);
+        if (char === "→") {
+            output.push(current);
+            current = "";
+        } else if (char === "(") {
+            let depth = 1;
+            current += char;
+
+            while (depth > 0 && i < input.length - 1) {
+                i++;
+                const nextChar = input.charAt(i);
+
+                if (nextChar === "(") {
+                    depth++;
+                } else if (nextChar === ")") {
+                    depth--;
+                }
+
+                current += nextChar;
+            }
+        } else if (current === ",") {
+            output.push(current);
+            current = "";
+        } else {
+            current += char;
+        }
+    }
+
+    output.push(current);
+
+    return output;
 }
 
 export let functionHelper;
@@ -101,43 +150,71 @@ functionCreateWithContainer = {
 export let functionCreateWithInt;
 functionCreateWithInt = {
     init: function() {
-        this.appendDummyInput().appendField("Int","TYPE");
+        this.appendDummyInput().appendField("Int");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(0)
         //this.setMutator(new Blockly.Mutator(["function_input_type_mutator"]))
+    },
+    getText : function() {
+        return "Int"
     }
 }
 
 export let functionCreateWithBool;
 functionCreateWithBool = {
     init: function() {
-        this.appendDummyInput().appendField("Bool","TYPE");
+        this.appendDummyInput().appendField("Bool");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(0)
         //this.setMutator(new Blockly.Mutator(["function_input_type_mutator"]))
+    },
+    getText : function() {
+        return "Bool"
     }
 }
 
 export let functionCreateWithChar;
 functionCreateWithChar = {
     init: function() {
-        this.appendDummyInput().appendField("Char","TYPE");
+        this.appendDummyInput().appendField("Char");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(0)
         //this.setMutator(new Blockly.Mutator(["function_input_type_mutator"]))
+    },
+    getText : function() {
+        return "Char"
     }
 }
 
 export let functionCreateWithString;
 functionCreateWithString = {
     init: function() {
-        this.appendDummyInput().appendField("String","TYPE");
+        this.appendDummyInput().appendField("String");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(0)
         //this.setMutator(new Blockly.Mutator(["function_input_type_mutator"]))
+    },
+    getText : function() {
+        return "String"
+    }
+}
+
+export let functionCreateWithList;
+functionCreateWithList = {
+    init: function() {
+        this.appendDummyInput().appendField("[")
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(0);
+        this.appendStatementInput("LISTTYPE");
+        this.appendDummyInput("]");
+    },
+    getText : function() {
+        let type = this.getInputTargetBlock("LISTTYPE") && this.getInputTargetBlock("LISTTYPE").getText();
+        return `[${type}]`
     }
 }

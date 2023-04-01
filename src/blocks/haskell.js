@@ -42,7 +42,7 @@ const lambdaBlocks = [
             {
                 "type": "field_input",
                 "name": "NAME",
-                "text": "function_name",
+                "text": "functionName",
                 "check" : ["statement","value"]
             },{
                 "type": "field_label_serializable",
@@ -52,7 +52,8 @@ const lambdaBlocks = [
                 "type": "input_dummy"
             },{
                 "type": "input_statement",
-                "name": "CODE"
+                "name": "CODE",
+                "check": "declaration"
             }
         ],
         "colour": lambdaColor,
@@ -80,8 +81,8 @@ const lambdaBlocks = [
         ],
         "colour": lambdaColor,
         "inputsInline": true,
-        "previousStatement": null,
-        "nextStatement": null,
+        "previousStatement": "declaration",
+        "nextStatement": "declaration",
         "tooltip": "",
         "helpUrl": "",
         "mutator":"function_definition_mutator"
@@ -92,7 +93,7 @@ const lambdaBlocks = [
             {
                 "type": "field_input",
                 "name": "NAME",
-                "text": "function_name",
+                "text": "functionName",
                 "check" : ["statement","value"]
             },{
                 "type": "field_label_serializable",
@@ -102,12 +103,13 @@ const lambdaBlocks = [
                 "type": "input_dummy"
             },{
                 "type": "input_statement",
-                "name": "CODE"
+                "name": "CODE",
+                "check": "declaration"
             }
         ],
         "colour": lambdaColor,
-        "previousStatement": null,
-        "nextStatement": null,
+        "previousStatement": "declaration",
+        "nextStatement": "declaration",
         "tooltip": "",
         "helpUrl": "",
         "mutator":"function_declaration_constructor_mutator"
@@ -119,7 +121,8 @@ const lambdaBlocks = [
                 "type": "input_dummy"
             },{
                 "type": "input_statement",
-                "name": "CODE"
+                "name": "CODE",
+                "check": "guard"
             },{
                 "type": "input_value",
                 "name": "OTHERWISE",
@@ -137,18 +140,18 @@ const lambdaBlocks = [
         "args0": [
             {
                 "type": "input_value",
-                "name": "OTHERWISE",
+                "name": "PREDICATE",
                 "check": ["statement","value"]
             },{
                 "type": "input_value",
-                "name": "OTHERWISE",
+                "name": "CODE",
                 "check": ["statement","value"]
             }
         ],
         "colour": lambdaColor,
         "inputsInline": true,
-        "previousStatement": null,
-        "nextStatement": null,
+        "previousStatement": "guard",
+        "nextStatement": "guard",
         "tooltip": "",
         "helpUrl": "",
     }]
