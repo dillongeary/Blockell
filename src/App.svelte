@@ -140,6 +140,9 @@
             "type":"cons"
           },{
             "kind":"block",
+            "type":"concat"
+          },{
+            "kind":"block",
             "type":"enum"
           },{
             "kind":"block",
