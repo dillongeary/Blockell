@@ -1,6 +1,6 @@
 import * as Blockly from "blockly";
 
-export function generateHaskellGenerator(addUpdateToolbox) {
+export function generateHaskellGenerator(addUpdateToolbox,formatBrackets) {
     const haskellGenerator = new Blockly.Generator("Haskell");
 
     haskellGenerator.scrub_ = function (block, code, thisOnly) {
@@ -54,6 +54,8 @@ export function generateHaskellGenerator(addUpdateToolbox) {
             let val = haskellGenerator.valueToCode(block,"INPUT"+i,0);
             if (val === "") {
                 break
+            } else if (block.getInputTargetBlock("INPUT"+i).type === "cons") {
+                val = `(${val})`
             }
             code = `${code} ${val}`
             i++
@@ -128,18 +130,6 @@ export function generateHaskellGenerator(addUpdateToolbox) {
         }
 
         return `${indent}| ${predicate} = ${code}`
-    }
-
-    function formatBrackets(str) {
-        if (str.startsWith("(") && str.endsWith(")")) {
-            return str
-        } else if (str.startsWith("[") && str.endsWith("]")) {
-            return str
-        } else if (str.includes(" ")) {
-            return "(" + str + ")"
-        } else {
-            return str
-        }
     }
 
     haskellGenerator["lamda_calculus"] = function(block) {

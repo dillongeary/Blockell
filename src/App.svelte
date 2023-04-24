@@ -256,6 +256,18 @@
 
     let currentFunctionBlocks = {}
 
+    function formatBrackets(str) {
+      if (str.startsWith("(") && str.endsWith(")")) {
+        return str
+      } else if (str.startsWith("[") && str.endsWith("]")) {
+        return str
+      } else if (str.includes(" ")) {
+        return "(" + str + ")"
+      } else {
+        return str
+      }
+    }
+
     function generateCode(haskellGenerator,name) {
       return function(block) {
         var code = `${name}`
@@ -265,7 +277,7 @@
           if (val === "") {
             break
           }
-          code = code + " " + val
+          code = code + " " + formatBrackets(val)
           i++
         }
         return [code,0];
@@ -278,7 +290,7 @@
       haskellGenerator["function_"+name] = generateCode(haskellGenerator,name)
     }
 
-    let haskellGenerator = generateHaskellGenerator(addUpdateToolbox);
+    let haskellGenerator = generateHaskellGenerator(addUpdateToolbox,formatBrackets);
 
     const runCode = () => {
       currentFunctionBlocks = {};
