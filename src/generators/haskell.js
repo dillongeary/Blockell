@@ -84,7 +84,12 @@ export function generateHaskellGenerator(addUpdateToolbox) {
         const rest = haskellGenerator.blockToCode(block.getInputTargetBlock("CODE"));
         let indentAmount = Math.max(0, block.getIndentCount() - 1)
         let indent = " ".repeat(indentAmount * 8)
-        let code = `${indent}  where ${rest}`
+        let code;
+        if (block.getPreviousBlock() && block.getPreviousBlock().type === "whereClause") {
+            code = `${indent}        ${rest}`
+        } else {
+            code = `${indent}  where ${rest}`
+        }
         return code
     }
 
