@@ -262,6 +262,7 @@ functionCreateWithTuple = {
                 code = code + ","
             }
             code = code + type
+            i++
         }
         return code + ")"
     }
