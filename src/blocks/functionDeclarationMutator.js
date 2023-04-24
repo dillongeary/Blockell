@@ -252,7 +252,7 @@ functionCreateWithTuple = {
         let types = []
         let current = this.getInputTargetBlock("TUPLETYPE")
         while (current) {
-            types = types + current.getText();
+            types.push(current.getText());
             current = current.getNextBlock();
         }
         let code = "("
