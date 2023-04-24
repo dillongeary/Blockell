@@ -77,6 +77,14 @@ functionDeclarationCreateMutator  = {
 }
 
 function getBlockFromString (workspace, input) {
+    input = input.replace(" ","");
+    let test = (x) => {
+        if (x < 0) {
+            return Number.MAX_VALUE
+        } else {
+            return x
+        }
+    }
     if (input.startsWith("[") && input.endsWith("]")) {
         let typeBlock = getBlockFromString(workspace,input.slice(1,-1));
         typeBlock.initSvg();
@@ -85,21 +93,48 @@ function getBlockFromString (workspace, input) {
 
         return listBlock;
     } else if (input.startsWith("(") && input.endsWith(")")) {
-        console.log(input)
-        console.log(input.slice(1,-1))
-        let types = typingParser(input.slice(1,-1))
-        let tupleBlock = workspace.newBlock("function_create_with_tuple")
-        let connection = tupleBlock.getInput("TUPLETYPE").connection
-        console.log(types)
-        for (const type of types) {
-            if (type) {
-                let typeBlock = getBlockFromString(workspace, type)
-                typeBlock.initSvg();
-                connection.connect(typeBlock.previousConnection);
-                connection = typeBlock.nextConnection;
+        if (test(input.indexOf(",")) < test(input.indexOf("→"))) {
+            let types = typingParser(input.slice(1,-1))
+            let tupleBlock = workspace.newBlock("function_create_with_tuple")
+            let connection = tupleBlock.getInput("TUPLETYPE").connection
+            for (const type of types) {
+                if (type) {
+                    let typeBlock = getBlockFromString(workspace, type)
+                    typeBlock.initSvg();
+                    connection.connect(typeBlock.previousConnection);
+                    connection = typeBlock.nextConnection;
+                }
             }
+            return tupleBlock
+        } else {
+            let types = typingParser(input.slice(1,-1))
+            let functionBlock = workspace.newBlock("function_create_with_function")
+            let connection = functionBlock.getInput("INPUTTYPE").connection
+            console.log(types)
+
+            let lastType = types.at(-1);
+            types = types.slice(0,-1);
+
+            for (const type of types) {
+                if (type) {
+                    console.log(type)
+                    let typeBlock = getBlockFromString(workspace, type)
+                    console.log(typeBlock.getText())
+                    typeBlock.initSvg();
+                    connection.connect(typeBlock.previousConnection);
+                    connection = typeBlock.nextConnection;
+                }
+            }
+            if (lastType) {
+                console.log(lastType)
+                let typeBlock = getBlockFromString(workspace, lastType);
+                console.log(typeBlock.getText())
+                typeBlock.initSvg()
+                functionBlock.getInput("OUTPUTTYPE").connection.connect(typeBlock.previousConnection)
+            }
+
+            return functionBlock
         }
-        return tupleBlock
     } else {
         switch (input) {
             case "Int" : return workspace.newBlock("function_create_with_int");
@@ -241,6 +276,40 @@ functionCreateWithList = {
     getText : function() {
         let type = this.getInputTargetBlock("LISTTYPE") && this.getInputTargetBlock("LISTTYPE").getText();
         return `[${type}]`
+    }
+}
+export let functionCreateWithFunction;
+functionCreateWithFunction = {
+    init: function() {
+        this.appendDummyInput().appendField("(")
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(0);
+        this.appendStatementInput("INPUTTYPE");
+        this.appendDummyInput().appendField("→")
+        this.appendStatementInput("OUTPUTTYPE");
+        this.appendDummyInput().appendField(")");
+    },
+    getText : function() {
+        let inputTypes = []
+        let current = this.getInputTargetBlock("INPUTTYPE")
+        while (current) {
+            inputTypes.push(current.getText())
+            current = current.getNextBlock()
+        }
+
+        let code = "("
+        let i = 0
+        for (const input of inputTypes) {
+            if (i > 0) {
+                code+= " → "
+            }
+            code+=input
+            i+=1
+        }
+
+        let output = this.getInputTargetBlock("OUTPUTTYPE") && this.getInputTargetBlock("OUTPUTTYPE").getText();
+        return `${code} → ${output})`
     }
 }
 export let functionCreateWithTuple;

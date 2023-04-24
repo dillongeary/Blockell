@@ -8,9 +8,15 @@
   import {generateHaskellGenerator} from "./generators/haskell";
   import {
     functionDeclarationCreateMutator,
-    functionCreateWithBool, functionCreateWithChar,
+    functionCreateWithBool,
+    functionCreateWithChar,
     functionCreateWithContainer,
-    functionCreateWithInt, functionCreateWithString, functionHelper, functionCreateWithList, functionCreateWithTuple
+    functionCreateWithInt,
+    functionCreateWithString,
+    functionHelper,
+    functionCreateWithList,
+    functionCreateWithTuple,
+    functionCreateWithFunction
   } from "./blocks/functionDeclarationMutator";
   import {defineFunctionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
   import {functionInputTypeHelper, functionInputTypeMutator} from "./blocks/functonInputTypeMutator";
@@ -33,11 +39,12 @@
   Blockly.Blocks["function_create_with_char"] = functionCreateWithChar;
   Blockly.Blocks["function_create_with_list"] = functionCreateWithList;
   Blockly.Blocks["function_create_with_tuple"] = functionCreateWithTuple;
+  Blockly.Blocks["function_create_with_function"] = functionCreateWithFunction;
 
   Blockly.Extensions.registerMutator("function_input_type_mutator",functionInputTypeMutator,functionInputTypeHelper)
 
   Blockly.Extensions.registerMutator("function_declaration_constructor_mutator",
-          functionDeclarationCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string","function_create_with_list","function_create_with_tuple"])
+          functionDeclarationCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string","function_create_with_list","function_create_with_tuple","function_create_with_function"])
 
   Blockly.Extensions.registerMutator("list_constructor_mutator",
           listCreateMutator,listHelper,["list_create_with_item"]);

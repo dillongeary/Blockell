@@ -3,12 +3,9 @@ import * as Blockly from "blockly";
 export function defineFunctionDefinitionCreateMutator(workspace) {
     let functionDefinitionCreateMutator = {
         saveExtraState: function () {
-            console.log("WE HAVE A RUN")
             if (this.getSurroundParent()) {
-                console.log("WE HAVE A PARENT")
                 let tempFuncName = this.getSurroundParent().getFieldValue("NAME");
                 if (tempFuncName !== null) {
-                    console.log("WE HAVE A NAME: " + tempFuncName)
                     this.functionName_ = tempFuncName;
                 }
                 let tempInputAmount = this.getSurroundParent().inputList_.length;
@@ -31,7 +28,6 @@ export function defineFunctionDefinitionCreateMutator(workspace) {
         },
         updateShape_: function () {
             if (this.getFieldValue("FUNC_NAME") && this.functionName_) {
-                console.log("WE HAVE A NAME")
                 this.setFieldValue(this.functionName_, "FUNC_NAME");
             }
 
