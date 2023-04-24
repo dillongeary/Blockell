@@ -89,10 +89,12 @@ function getBlockFromString (workspace, input) {
         let tupleBlock = workspace.newBlock("function_create_with_tuple")
         let connection = tupleBlock.getInput("TUPLETYPE").connection
         for (const type of types) {
-            let typeBlock = getBlockFromString(workspace,type)
-            typeBlock.initSvg();
-            connection.connect(typeBlock.previousConnection);
-            connection = typeBlock.nextConnection;
+            if (!type) {
+                let typeBlock = getBlockFromString(workspace, type)
+                typeBlock.initSvg();
+                connection.connect(typeBlock.previousConnection);
+                connection = typeBlock.nextConnection;
+            }
         }
         return tupleBlock
     } else {
@@ -248,7 +250,7 @@ functionCreateWithTuple = {
     },
     getText : function() {
         let types = []
-        let current = this.getInputTargetBlock()
+        let current = this.getInputTargetBlock("TUPLETYPE")
         while (current) {
             types = types + current.getText();
             current = current.getNextBlock();
