@@ -10,7 +10,7 @@
     functionDeclarationCreateMutator,
     functionCreateWithBool, functionCreateWithChar,
     functionCreateWithContainer,
-    functionCreateWithInt, functionCreateWithString, functionHelper
+    functionCreateWithInt, functionCreateWithString, functionHelper, functionCreateWithList
   } from "./blocks/functionDeclarationMutator";
   import {defineFunctionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
   import {functionInputTypeHelper, functionInputTypeMutator} from "./blocks/functonInputTypeMutator";
@@ -31,11 +31,12 @@
   Blockly.Blocks["function_create_with_bool"] = functionCreateWithBool;
   Blockly.Blocks["function_create_with_string"] = functionCreateWithString;
   Blockly.Blocks["function_create_with_char"] = functionCreateWithChar;
+  Blockly.Blocks["function_create_with_list"] = functionCreateWithList;
 
   Blockly.Extensions.registerMutator("function_input_type_mutator",functionInputTypeMutator,functionInputTypeHelper)
 
   Blockly.Extensions.registerMutator("function_declaration_constructor_mutator",
-          functionDeclarationCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string"])
+          functionDeclarationCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string","function_create_with_list"])
 
   Blockly.Extensions.registerMutator("list_constructor_mutator",
           listCreateMutator,listHelper,["list_create_with_item"]);
@@ -342,5 +343,7 @@
     background-color: rgb(247, 240, 228);
     color: black;
     text-align: left;
+    margin: auto;
+    margin-bottom: 0px;
   }
 </style>

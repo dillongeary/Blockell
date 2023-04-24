@@ -21,14 +21,7 @@ functionDeclarationCreateMutator  = {
 
         var inputConnection = topBlock.getInput("STACK").connection;
         for (const block of this.inputList_) {
-            var itemBlock;
-            switch (block) {
-                case "Int" : itemBlock = workspace.newBlock("function_create_with_int"); break;
-                case "String" : itemBlock = workspace.newBlock("function_create_with_string"); break;
-                case "Char" : itemBlock = workspace.newBlock("function_create_with_char"); break;
-                case "Bool" : itemBlock = workspace.newBlock("function_create_with_bool"); break;
-                default : if (block.startsWith("(")) {}
-            }
+            let itemBlock = getBlockFromString(workspace,block)
             itemBlock.initSvg();
             inputConnection.connect(itemBlock.previousConnection);
             inputConnection = itemBlock.nextConnection;
@@ -36,14 +29,7 @@ functionDeclarationCreateMutator  = {
 
         var outputConnection = topBlock.getInput("STACK2").connection;
         for (const block of this.outputList_) {
-            var itemBlock;
-            switch (block) {
-                case "Int" : itemBlock = workspace.newBlock("function_create_with_int"); break;
-                case "String" : itemBlock = workspace.newBlock("function_create_with_string"); break;
-                case "Char" : itemBlock = workspace.newBlock("function_create_with_char"); break;
-                case "Bool" : itemBlock = workspace.newBlock("function_create_with_bool"); break;
-                default : itemBlock = workspace.newBlock("function_create_with_int");
-            }
+            let itemBlock = getBlockFromString(workspace,block)
             itemBlock.initSvg();
             outputConnection.connect(itemBlock.previousConnection);
             outputConnection = itemBlock.nextConnection;
@@ -88,6 +74,29 @@ functionDeclarationCreateMutator  = {
         }
         return this.indentCount_;
     }
+}
+
+function getBlockFromString (workspace, input) {
+    if (input.startsWith("[") && input.endsWith("]")) {
+        let typeBlock = getBlockFromString(workspace,input.slice(1,-1));
+        typeBlock.initSvg();
+        let listBlock = workspace.newBlock("function_create_with_list")
+        listBlock.getInput("LISTTYPE").connection.connect(typeBlock.previousConnection);
+
+        return listBlock;
+    } else if (input.startsWith("(") && input.endsWith(")")) {
+
+    } else {
+        switch (input) {
+            case "Int" : return workspace.newBlock("function_create_with_int");
+            case "String" : return workspace.newBlock("function_create_with_string");
+            case "Char" : return workspace.newBlock("function_create_with_char");
+            case "Bool" : return workspace.newBlock("function_create_with_bool");
+            default : return workspace.newBlock("function_create_with_int");
+        }
+    }
+
+
 }
 
 function typingParser(input) {
@@ -211,7 +220,7 @@ functionCreateWithList = {
         this.setNextStatement(true);
         this.setColour(0);
         this.appendStatementInput("LISTTYPE");
-        this.appendDummyInput("]");
+        this.appendDummyInput().appendField("]");
     },
     getText : function() {
         let type = this.getInputTargetBlock("LISTTYPE") && this.getInputTargetBlock("LISTTYPE").getText();
