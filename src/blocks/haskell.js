@@ -271,6 +271,26 @@ const listBlocks = [
         "tooltip":"",
         "helpUrl":""
     },{
+        "type": "concat",
+        "message0": "%1 ++ %2",
+        "args0": [
+            {
+                "type":"input_value",
+                "name":"ITEM",
+                "check": ["statement","value"]
+            },
+            {
+                "type":"input_value",
+                "name":"LIST",
+                "check": ["statement","value"]
+            }
+        ],
+        "inputsInline": true,
+        "output": "value",
+        "colour":listColor,
+        "tooltip":"",
+        "helpUrl":""
+    },{
         "type": "enum",
         "message0": "%1 .. %2",
         "args0": [

@@ -214,6 +214,15 @@ export function generateHaskellGenerator(addUpdateToolbox) {
         return [code,0];
     }
 
+    haskellGenerator["concat"] = function(block) {
+        let item = haskellGenerator.valueToCode(block,"ITEM",0) || "";
+        let list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+        item = formatBrackets(item)
+        list = formatBrackets(list)
+        const code = `${item} ++ ${list}`;
+        return [code,0];
+    }
+
     haskellGenerator["enum"] = function(block) {
         let item = haskellGenerator.valueToCode(block,"FROM",0) || "";
         let list = haskellGenerator.valueToCode(block,"TO",0) || "";
