@@ -10,7 +10,7 @@
     functionDeclarationCreateMutator,
     functionCreateWithBool, functionCreateWithChar,
     functionCreateWithContainer,
-    functionCreateWithInt, functionCreateWithString, functionHelper, functionCreateWithList
+    functionCreateWithInt, functionCreateWithString, functionHelper, functionCreateWithList, functionCreateWithTuple
   } from "./blocks/functionDeclarationMutator";
   import {defineFunctionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
   import {functionInputTypeHelper, functionInputTypeMutator} from "./blocks/functonInputTypeMutator";
@@ -32,11 +32,12 @@
   Blockly.Blocks["function_create_with_string"] = functionCreateWithString;
   Blockly.Blocks["function_create_with_char"] = functionCreateWithChar;
   Blockly.Blocks["function_create_with_list"] = functionCreateWithList;
+  Blockly.Blocks["function_create_with_tuple"] = functionCreateWithTuple;
 
   Blockly.Extensions.registerMutator("function_input_type_mutator",functionInputTypeMutator,functionInputTypeHelper)
 
   Blockly.Extensions.registerMutator("function_declaration_constructor_mutator",
-          functionDeclarationCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string","function_create_with_list"])
+          functionDeclarationCreateMutator,functionHelper,["function_create_with_int","function_create_with_bool","function_create_with_char","function_create_with_string","function_create_with_list","function_create_with_tuple"])
 
   Blockly.Extensions.registerMutator("list_constructor_mutator",
           listCreateMutator,listHelper,["list_create_with_item"]);

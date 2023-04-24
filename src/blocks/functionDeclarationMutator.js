@@ -85,7 +85,15 @@ function getBlockFromString (workspace, input) {
 
         return listBlock;
     } else if (input.startsWith("(") && input.endsWith(")")) {
-
+        let types = typingParser(input)
+        let tupleBlock = workspace.newBlock("function_create_with_tuple")
+        let connection = tupleBlock.getInput("TUPLETYPE").connection
+        for (const type of types) {
+            let typeBlock = getBlockFromString(type)
+            connection.connect(typeBlock.previousConnection);
+            connection = typeBlock.nextConnection;
+        }
+        return tupleBlock
     } else {
         switch (input) {
             case "Int" : return workspace.newBlock("function_create_with_int");
@@ -225,5 +233,33 @@ functionCreateWithList = {
     getText : function() {
         let type = this.getInputTargetBlock("LISTTYPE") && this.getInputTargetBlock("LISTTYPE").getText();
         return `[${type}]`
+    }
+}
+export let functionCreateWithTuple;
+functionCreateWithTuple = {
+    init: function() {
+        this.appendDummyInput().appendField("(")
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(0);
+        this.appendStatementInput("TUPLETYPE");
+        this.appendDummyInput().appendField(")");
+    },
+    getText : function() {
+        let types = []
+        let current = this.getInputTargetBlock()
+        while (current) {
+            types = types + current.getText();
+            current = current.getNextBlock();
+        }
+        let code = "("
+        let i = 0
+        for (const type of types) {
+            if (i > 0) {
+                code = code + ","
+            }
+            code = code + type
+        }
+        return code + ")"
     }
 }
