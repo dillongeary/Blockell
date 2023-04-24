@@ -90,6 +90,7 @@ function getBlockFromString (workspace, input) {
         let connection = tupleBlock.getInput("TUPLETYPE").connection
         for (const type of types) {
             let typeBlock = getBlockFromString(workspace,type)
+            typeBlock.initSvg();
             connection.connect(typeBlock.previousConnection);
             connection = typeBlock.nextConnection;
         }
