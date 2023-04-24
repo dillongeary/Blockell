@@ -85,7 +85,7 @@ function getBlockFromString (workspace, input) {
 
         return listBlock;
     } else if (input.startsWith("(") && input.endsWith(")")) {
-        let types = typingParser(input)
+        let types = typingParser(input.slice(1,-1))
         let tupleBlock = workspace.newBlock("function_create_with_tuple")
         let connection = tupleBlock.getInput("TUPLETYPE").connection
         for (const type of types) {
