@@ -89,7 +89,7 @@ function getBlockFromString (workspace, input) {
         let tupleBlock = workspace.newBlock("function_create_with_tuple")
         let connection = tupleBlock.getInput("TUPLETYPE").connection
         for (const type of types) {
-            let typeBlock = getBlockFromString(type)
+            let typeBlock = getBlockFromString(workspace,type)
             connection.connect(typeBlock.previousConnection);
             connection = typeBlock.nextConnection;
         }
