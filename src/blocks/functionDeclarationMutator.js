@@ -85,9 +85,12 @@ function getBlockFromString (workspace, input) {
 
         return listBlock;
     } else if (input.startsWith("(") && input.endsWith(")")) {
+        console.log(input)
+        console.log(input.slice(1,-1))
         let types = typingParser(input.slice(1,-1))
         let tupleBlock = workspace.newBlock("function_create_with_tuple")
         let connection = tupleBlock.getInput("TUPLETYPE").connection
+        console.log(types)
         for (const type of types) {
             if (type) {
                 let typeBlock = getBlockFromString(workspace, type)
@@ -111,16 +114,17 @@ function getBlockFromString (workspace, input) {
 }
 
 function typingParser(input) {
+    console.log(input)
     var output = [];
     let current = "";
     input = input.replace(" ","");
     let char = "";
     for (let i = 0; i < input.length; i++) {
         char = input.charAt(i);
-        if (char === "→") {
+        if (char == "→") {
             output.push(current);
             current = "";
-        } else if (char === "(") {
+        } else if (char == "(") {
             let depth = 1;
             current += char;
 
@@ -136,8 +140,9 @@ function typingParser(input) {
 
                 current += nextChar;
             }
-        } else if (current === ",") {
+        } else if (char == ",") {
             output.push(current);
+            console.log(current)
             current = "";
         } else {
             current += char;
