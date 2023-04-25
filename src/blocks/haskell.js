@@ -3,26 +3,6 @@ import * as Blockly from "blockly";
 const lambdaColor = 0;
 const lambdaBlocks = [
     {
-    "type": "lamda_calculus",
-    "message0": "λ %1 → %2",
-    "args0": [
-        {
-            "type": "input_value",
-            "name": "VAR",
-            "check": "value"
-        },
-        {
-            "type": "input_value",
-            "name": "VALUE",
-            "check": ["statement","value"]
-        }
-    ],
-    "inputsInline": true,
-    "output": "statement",
-    "colour": lambdaColor,
-    "tooltip": "",
-    "helpUrl": ""
-},{
         "type": "starter",
         "message0": "Run: %1",
         "args0": [
@@ -159,6 +139,26 @@ const lambdaBlocks = [
 const higherColor = 45;
 const higherOrderBlocks = [
     {
+        "type": "lamda_calculus",
+        "message0": "λ %1 → %2",
+        "args0": [
+            {
+                "type": "input_value",
+                "name": "VAR",
+                "check": "value"
+            },
+            {
+                "type": "input_value",
+                "name": "VALUE",
+                "check": ["statement","value"]
+            }
+        ],
+        "inputsInline": true,
+        "output": "statement",
+        "colour": higherColor,
+        "tooltip": "",
+        "helpUrl": ""
+    },{
     "type": "map",
     "message0": "map %1 %2",
     "args0": [
