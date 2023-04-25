@@ -335,6 +335,34 @@ const listBlocks = [
         "colour":listColor,
         "tooltip":"",
         "helpUrl":""
+    },{
+        "type": "list_sublist",
+        "message0": "%1 %2 %3",
+        "args0": [
+            {
+                "type":"field_dropdown",
+                "name":"OPERATOR",
+                "options": [
+                    ["take","take"],
+                    ["drop","drop"],
+                ]
+            },
+            {
+                "type":"input_value",
+                "name":"Number",
+                "check": ["statement","value"]
+            },
+            {
+                "type":"input_value",
+                "name":"LIST",
+                "check": ["statement","value"]
+            }
+        ],
+        "inputsInline": true,
+        "output": "statement",
+        "colour":listColor,
+        "tooltip":"",
+        "helpUrl":""
     }
 ]
 
@@ -558,6 +586,13 @@ const variableBlocks = [
                 "text": "variableName"
             }
         ],
+        "output": "value",
+        "colour": variableColor,
+        "tooltip": "",
+        "helpUrl": ""
+    },{
+        "type": "wildcard",
+        "message0": "_",
         "output": "value",
         "colour": variableColor,
         "tooltip": "",

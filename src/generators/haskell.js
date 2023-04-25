@@ -200,6 +200,16 @@ export function generateHaskellGenerator(addUpdateToolbox,formatBrackets) {
         return [code,0];
     }
 
+    haskellGenerator["list_sublist"] = function(block) {
+        const operator = block.getFieldValue("OPERATOR");
+        let num = haskellGenerator.valueToCode(block,"NUMBER" +,0) || "";
+        num = formatBrackets(num)
+        let list = haskellGenerator.valueToCode(block,"LIST",0) || "";
+        list = formatBrackets(list)
+        const code = `${operator} ${num} ${list}`;
+        return [code,0];
+    }
+
     haskellGenerator["cons"] = function(block) {
         let item = haskellGenerator.valueToCode(block,"ITEM",0) || "";
         let list = haskellGenerator.valueToCode(block,"LIST",0) || "";
@@ -313,6 +323,10 @@ export function generateHaskellGenerator(addUpdateToolbox,formatBrackets) {
     haskellGenerator["variable"] = function(block) {
         const value = block.getFieldValue("VAL");
         return [value,0];
+    }
+
+    haskellGenerator["wildcard"] = function(block) {
+        return ["_",0];
     }
 
     return haskellGenerator;

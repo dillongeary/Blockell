@@ -155,6 +155,9 @@
           },{
             "kind":"block",
             "type":"list_access"
+          },{
+            "kind":"block",
+            "type":"list_sublist"
           }
         ]
       },
@@ -212,6 +215,9 @@
           },{
             "kind":"block",
             "type":"variable"
+          },{
+            "kind":"block",
+            "type":"wildcard"
           }
         ]
       },
