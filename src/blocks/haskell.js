@@ -292,7 +292,7 @@ const listBlocks = [
         "helpUrl":""
     },{
         "type": "enum",
-        "message0": "%1 .. %2",
+        "message0": "[%1 .. %2]",
         "args0": [
             {
                 "type":"input_value",

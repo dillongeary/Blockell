@@ -223,7 +223,7 @@ export function generateHaskellGenerator(addUpdateToolbox,formatBrackets) {
         let list = haskellGenerator.valueToCode(block,"TO",0) || "";
         item = formatBrackets(item)
         list = formatBrackets(list)
-        const code = `${item} .. ${list}`;
+        const code = `[${item} .. ${list}]`;
         return [code,0];
     }
 
