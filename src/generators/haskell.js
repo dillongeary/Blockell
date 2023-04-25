@@ -202,7 +202,7 @@ export function generateHaskellGenerator(addUpdateToolbox,formatBrackets) {
 
     haskellGenerator["list_sublist"] = function(block) {
         const operator = block.getFieldValue("OPERATOR");
-        let num = haskellGenerator.valueToCode(block,"NUMBER" +,0) || "";
+        let num = haskellGenerator.valueToCode(block,"NUMBER",0) || "";
         num = formatBrackets(num)
         let list = haskellGenerator.valueToCode(block,"LIST",0) || "";
         list = formatBrackets(list)
