@@ -349,7 +349,7 @@ const listBlocks = [
             },
             {
                 "type":"input_value",
-                "name":"Number",
+                "name":"NUMBER",
                 "check": ["statement","value"]
             },
             {
