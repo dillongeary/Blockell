@@ -283,6 +283,7 @@
     }
 
     function checkIfOneBigOuterBracket(str) {
+      str = str.slice(1,-1)
       let i = 0;
       for (const char of str) {
         if (char == "(") {
