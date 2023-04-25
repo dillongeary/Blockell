@@ -20,6 +20,7 @@
   } from "./blocks/functionDeclarationMutator";
   import {defineFunctionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
   import {functionInputTypeHelper, functionInputTypeMutator} from "./blocks/functonInputTypeMutator";
+  import {characterValidator, integerValidator, variableValidator} from "./blocks/inputValidators";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
   Blockly.blockRendering.register("custom_rendering",CustomRenderer);
@@ -52,7 +53,9 @@
   Blockly.Extensions.registerMutator("tuple_constructor_mutator",
           tupleCreateMutator,tupleHelper,["tuple_create_with_item"]);
 
-
+  Blockly.Extensions.register("intValidator",integerValidator);
+  Blockly.Extensions.register("charValidator",characterValidator);
+  Blockly.Extensions.register("valValidator",variableValidator);
   const toolbox = {
     "kind":"categoryToolbox",
     "contents": [

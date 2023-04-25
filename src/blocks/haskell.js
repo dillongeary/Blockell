@@ -544,7 +544,8 @@ const variableBlocks = [
         "output": "value",
         "colour": variableColor,
         "tooltip": "",
-        "helpUrl": ""
+        "helpUrl": "",
+        "extensions": ["charValidator",]
     },{
         "type": "integer",
         "message0": "%1",
@@ -558,7 +559,8 @@ const variableBlocks = [
         "output": "value",
         "colour": variableColor,
         "tooltip": "",
-        "helpUrl": ""
+        "helpUrl": "",
+        "extensions": ["intValidator",]
     },{
         "type": "bool",
         "message0": "%1",
@@ -589,7 +591,8 @@ const variableBlocks = [
         "output": "value",
         "colour": variableColor,
         "tooltip": "",
-        "helpUrl": ""
+        "helpUrl": "",
+        "extensions": ["varValidator",]
     },{
         "type": "wildcard",
         "message0": "_",
