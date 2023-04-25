@@ -271,7 +271,7 @@
     let currentFunctionBlocks = {}
 
     function formatBrackets(str) {
-      if (str.startsWith("(") && str.endsWith(")")) {
+      if (str.startsWith("(") && str.endsWith(")") && checkIfOneBigOuterBracket(str)) {
         return str
       } else if (str.startsWith("[") && str.endsWith("]")) {
         return str
@@ -280,6 +280,21 @@
       } else {
         return str
       }
+    }
+
+    function checkIfOneBigOuterBracket(str) {
+      let i = 0;
+      for (const char of str) {
+        if (char == "(") {
+          i+=1;
+        } else if (char == ")") {
+          i-=1;
+        }
+        if (i < 0) {
+          return false;
+        }
+      }
+      return true;
     }
 
     function generateCode(haskellGenerator,name) {
