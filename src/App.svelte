@@ -55,7 +55,7 @@
 
   Blockly.Extensions.register("intValidator",integerValidator);
   Blockly.Extensions.register("charValidator",characterValidator);
-  Blockly.Extensions.register("valValidator",variableValidator);
+  Blockly.Extensions.register("varValidator",variableValidator);
   const toolbox = {
     "kind":"categoryToolbox",
     "contents": [
