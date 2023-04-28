@@ -2,9 +2,9 @@
   import * as Blockly from "blockly"
   import {onMount} from "svelte";
   import {blocks} from "./blocks/haskell";
-  import {CustomRenderer} from "./custom_renderer"
-  import {listCreateMutator,listHelper,listCreateWithItem,listCreateWithContainer} from "./blocks/listMutator";
-  import {tupleCreateMutator,tupleHelper,tupleCreateWithItem,tupleCreateWithContainer} from "./blocks/tupleMutator";
+  //import {CustomRenderer} from "./custom_renderer"
+  import {listCreateMutator,listHelper,listCreateWithItem,listCreateWithContainer} from "./mutatorsAndExtensions/listMutator";
+  import {tupleCreateMutator,tupleHelper,tupleCreateWithItem,tupleCreateWithContainer} from "./mutatorsAndExtensions/tupleMutator";
   import {generateHaskellGenerator} from "./generators/haskell";
   import {
     functionDeclarationCreateMutator,
@@ -17,13 +17,13 @@
     functionCreateWithList,
     functionCreateWithTuple,
     functionCreateWithFunction
-  } from "./blocks/functionDeclarationMutator";
-  import {defineFunctionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
-  import {functionInputTypeHelper, functionInputTypeMutator} from "./blocks/functonInputTypeMutator";
-  import {characterValidator, integerValidator, stringValidator, variableValidator} from "./blocks/inputValidators";
+  } from "./mutatorsAndExtensions/functionDeclarationMutator";
+  import {defineFunctionDefinitionCreateMutator, functionDefinitionHelper} from "./mutatorsAndExtensions/funcitonDefinitionMutator";
+  import {functionInputTypeHelper, functionInputTypeMutator} from "./mutatorsAndExtensions/functonInputTypeMutator";
+  import {characterValidator, integerValidator, stringValidator, variableValidator} from "./mutatorsAndExtensions/inputValidators";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
-  Blockly.blockRendering.register("custom_rendering",CustomRenderer);
+  //Blockly.blockRendering.register("custom_rendering",CustomRenderer);
 
   Blockly.common.defineBlocks(blocks);
 
@@ -333,6 +333,7 @@
       code = haskellGenerator.workspaceToCode(workspace);
 
       let toolboxCopy = structuredClone(toolbox);
+      toolboxCopy["contents"][6]["color"] = "270";
       toolboxCopy["contents"][6]["contents"] = Object.values(currentFunctionBlocks);
       workspace.updateToolbox(toolboxCopy);
     };
@@ -386,6 +387,7 @@
     flex: 1;
     width: 40%;
     height: 100%;
+    color: #eeeeee;
   }
   #insideOutputPane {
     flex: 1;
