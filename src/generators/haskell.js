@@ -83,14 +83,34 @@ export function generateHaskellGenerator(addUpdateToolbox,formatBrackets) {
     }
 
     haskellGenerator["whereClause"] = function (block) {
-        const rest = haskellGenerator.blockToCode(block.getInputTargetBlock("CODE"));
+        const name = block.getFieldValue("NAME");
+        let amountOfLists = block.inputList_.length ;
+        const definition = haskellGenerator.blockToCode(block.getInputTargetBlock("CODE"));
+
+        let json = {
+            "kind":"block",
+            "type":"function_"+name
+        }
+        let blockk = {
+            init: function() {
+                this.appendDummyInput().appendField(name);
+                for (var i = 0; i < amountOfLists; i++) {
+                    this.appendValueInput("ADD" + i).setCheck(null);
+                }
+                this.setInputsInline(true);
+                this.setColour(270);
+                this.setOutput(true,null);
+            }
+        };
+        addUpdateToolbox(haskellGenerator,name,blockk,json);
+
         let indentAmount = Math.max(0, block.getIndentCount() - 1)
         let indent = " ".repeat(indentAmount * 8)
         let code;
         if (block.getPreviousBlock() && block.getPreviousBlock().type === "whereClause") {
-            code = `${indent}        ${rest}`
+            code = `${indent}        ${definition}`
         } else {
-            code = `${indent}  where ${rest}`
+            code = `${indent}  where ${definition}`
         }
         return code
     }
