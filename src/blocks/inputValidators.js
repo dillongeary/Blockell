@@ -12,6 +12,13 @@ export let characterValidator = function () {
         else return value;
     })
 }
+
+export let stringValidator = function () {
+    this.getField("VAL").setValidator(function (value) {
+        value = value.replace(/"/g,"")
+        return value
+    })
+}
 export let variableValidator = function () {
     this.getField("VAL").setValidator(function (value) {
         value = value.replace(/[^0-9a-zA-Z_\- ]/g,"");

@@ -530,7 +530,8 @@ const variableBlocks = [
         "output": "value",
         "colour": variableColor,
         "tooltip": "",
-        "helpUrl": ""
+        "helpUrl": "",
+        "extensions": ["strValidator",]
     },{
         "type": "char",
         "message0": "\' %1 \'",

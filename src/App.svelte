@@ -20,7 +20,7 @@
   } from "./blocks/functionDeclarationMutator";
   import {defineFunctionDefinitionCreateMutator, functionDefinitionHelper} from "./blocks/funcitonDefinitionMutator";
   import {functionInputTypeHelper, functionInputTypeMutator} from "./blocks/functonInputTypeMutator";
-  import {characterValidator, integerValidator, variableValidator} from "./blocks/inputValidators";
+  import {characterValidator, integerValidator, stringValidator, variableValidator} from "./blocks/inputValidators";
   //import {load, save} from "blockly/core/serialization/workspaces";
 
   Blockly.blockRendering.register("custom_rendering",CustomRenderer);
@@ -56,6 +56,7 @@
   Blockly.Extensions.register("intValidator",integerValidator);
   Blockly.Extensions.register("charValidator",characterValidator);
   Blockly.Extensions.register("varValidator",variableValidator);
+  Blockly.Extensions.register("strValidator",stringValidator);
 
   const toolbox = {
     "kind":"categoryToolbox",
