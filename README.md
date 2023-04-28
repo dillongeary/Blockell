@@ -1,10 +1,6 @@
-# COMP3200 Project
+# A Block-Based Visual Programming Language
 
-A web-app IDE, written in Type Script using the Blockly Library.<br/>
-A tool where users can make Haskell like code using a Block-Based Visual Programming Language.
+A proof-of-concept tool / code eddit for a Block-Based Functional Programming Language.<br/>
+A tool where users can make Haskell like code using a Scratch like language, in hopes to make learning Haskell easier and making the Haskell Language more approachable.
 
-Electronics and Computer Science<br/>
-Faculty of Physical Sciences and Engineering<br/>
-University of Southampton
-
-A project submitted for the award of MEng Computer Science
+A project submitted for the award of MEng Computer Science at the University of Southampton
