@@ -162,7 +162,7 @@ export function generateHaskellGenerator(addUpdateToolbox,formatBrackets) {
 
     haskellGenerator["starter"] = function(block) {
         const value = haskellGenerator.valueToCode(block,"NAME",0) || "";
-        const code = `main = do ${value}`;
+        const code = `main :: IO()\nmain = do\n  putStrLn $ show $ ${value}`;
         return code;
     }
 

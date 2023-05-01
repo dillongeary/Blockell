@@ -20,7 +20,6 @@
     "vite": "^4.1.0"
   },
   "dependencies": {
-    "@blockly/block-plus-minus": "^4.0.11",
     "blockly": "^9.2.1"
   }
 }
